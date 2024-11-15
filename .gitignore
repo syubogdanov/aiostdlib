@@ -1,0 +1,19 @@
+# Environments
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ruff
+.ruff_cache/
+
+# Visual Studio Code
+.vscode/
+
+# aiostdlib
+.tmp/
+
+# mypy
+.mypy_cache/
