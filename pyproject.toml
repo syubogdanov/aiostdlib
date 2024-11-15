@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "aiostdlib"
 version = "0.0.0"
-description = "Asynchronous standard library."
+description = "Only the standard library... but asynchronous!"
 license = "MIT"
 authors = ["Sergei Bogdanov <syubogdanov@outlook.com>"]
 maintainers = ["Sergei Bogdanov <syubogdanov@outlook.com>"]
@@ -56,6 +56,14 @@ line-length = 100
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = ["D100", "D104"]
+
+[tool.ruff.lint.flake8-type-checking]
+exempt-modules = [
+    "aiostdlib.internal.backports.typing",
+    "aiostdlib.internal.utils.typing",
+    "typing",
+    "typing_extensions",
+]
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2
