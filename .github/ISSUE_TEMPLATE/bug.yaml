@@ -1,0 +1,140 @@
+---
+name: Bug Report
+description: File a bug report.
+title: "[BUG]: <...>"
+labels:
+  - BUG
+body:
+  - type: checkboxes
+    attributes:
+      label: Terms
+      description: By submitting this issue, you agree to the terms.
+      options:
+        - label: I agree to follow this project's code of conduct.
+          required: true
+        - label: I confirm that the same issue has not been submitted yet.
+          required: true
+  - type: textarea
+    attributes:
+      label: What happened?
+      description: Describe in detail what the bug is.
+      render: markdown
+      placeholder: |
+        * What is the context?
+        * Under what conditions does the bug appear?
+        * What is the expected behavior?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: How to Reproduce?
+      description: Describe how to reproduce the bug.
+      render: markdown
+      placeholder: |
+        1. Write such and such text to a file...
+        2. Run the command: `python -B -m ...`
+        3. ...
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Library Version
+      description: What version of the software are you running?
+      options:
+        - aiostdlib 0.0.0
+        - Other (Use the Comments)
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Python Version
+      description: What version of the software are you running?
+      options:
+        - CPython 3.8.0
+        - CPython 3.8.1
+        - CPython 3.8.2
+        - CPython 3.8.3
+        - CPython 3.8.4
+        - CPython 3.8.5
+        - CPython 3.8.6
+        - CPython 3.8.7
+        - CPython 3.8.8
+        - CPython 3.8.9
+        - CPython 3.8.10
+        - CPython 3.8.11
+        - CPython 3.8.12
+        - CPython 3.8.13
+        - CPython 3.8.14
+        - CPython 3.8.15
+        - CPython 3.8.16
+        - CPython 3.8.17
+        - CPython 3.8.18
+        - CPython 3.9.0
+        - CPython 3.9.1
+        - CPython 3.9.2
+        - CPython 3.9.3
+        - CPython 3.9.4
+        - CPython 3.9.5
+        - CPython 3.9.6
+        - CPython 3.9.7
+        - CPython 3.9.8
+        - CPython 3.9.9
+        - CPython 3.9.10
+        - CPython 3.9.11
+        - CPython 3.9.12
+        - CPython 3.9.13
+        - CPython 3.9.14
+        - CPython 3.9.15
+        - CPython 3.9.16
+        - CPython 3.9.17
+        - CPython 3.9.18
+        - CPython 3.9.19
+        - CPython 3.10.0
+        - CPython 3.10.1
+        - CPython 3.10.2
+        - CPython 3.10.3
+        - CPython 3.10.4
+        - CPython 3.10.5
+        - CPython 3.10.6
+        - CPython 3.10.7
+        - CPython 3.10.8
+        - CPython 3.10.9
+        - CPython 3.10.10
+        - CPython 3.10.11
+        - CPython 3.10.12
+        - CPython 3.10.13
+        - CPython 3.10.14
+        - CPython 3.11.0
+        - CPython 3.11.1
+        - CPython 3.11.2
+        - CPython 3.11.3
+        - CPython 3.11.4
+        - CPython 3.11.5
+        - CPython 3.11.6
+        - CPython 3.11.7
+        - CPython 3.11.8
+        - CPython 3.11.9
+        - CPython 3.12.0
+        - CPython 3.12.1
+        - CPython 3.12.2
+        - CPython 3.12.3
+        - CPython 3.12.4
+        - Other (Use the Comments)
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Operating System
+      description: Which operating system is used?
+      render: markdown
+      placeholder: <...>
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Comments
+      description: Links? References? Something else?
+      render: markdown
+      placeholder: <...>
+    validations:
+      required: false
