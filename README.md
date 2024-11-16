@@ -98,19 +98,83 @@ if __name__ == "__main__":
 
 #### tarfile
 
-...
+```python
+import asyncio
+
+from aiostdlib import tarfile
+
+
+async def main() -> None:
+    if not await tarfile.is_tarfile("./aiostdlib.tar.gz"):
+        detail = "The file is not a `tar` archive"
+        raise RuntimeError(detail)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
 #### tempfile
 
-...
+```python
+import asyncio
+
+from aiostdlib import tempfile
+
+
+async def main() -> None:
+    tempdir, path = await asyncio.gather(
+        tempfile.gettempdir(),
+        tempfile.mkdtemp(),
+    )
+
+    if not path.startswith(tempdir):
+        detail = "This is strange..."
+        raise RuntimeError(detail)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
 #### tomllib
 
-...
+```python
+import asyncio
+
+from aiostdlib import builtins, tomllib
+
+
+async def main() -> None:
+    async with builtins.open("./file.toml", mode="rb") as file:
+        data = await tomllib.load(file)
+
+        if "aiostdlib" not in data:
+            detail = "Where is 'aiostdlib'?"
+            raise RuntimeError(detail)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
 #### zipfile
 
-...
+```python
+import asyncio
+
+from aiostdlib import zipfile
+
+
+async def main() -> None:
+    if not await zipfile.is_zipfile("./aiostdlib.zip"):
+        detail = "The file is not a `zip` archive"
+        raise RuntimeError(detail)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
 ## License
 
