@@ -5,7 +5,11 @@
 [![License][shields/pypi/license]][github/license]
 [![Python Version][shields/python/version]][pypi/homepage]
 
-...
+## Key Features
+
+* Provides asynchronous versions of the standard libraries;
+* The same API as the Python's standard, blocking API;
+* Blocking IO is performed in a separate thread.
 
 ## Getting Started
 
