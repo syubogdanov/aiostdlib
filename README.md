@@ -23,6 +23,40 @@ The library is available as [`aiostdlib`][pypi/homepage] on PyPI:
 pip install aiostdlib
 ```
 
+### Usage
+
+#### builtins
+
+...
+
+#### json
+
+...
+
+#### pathlib
+
+...
+
+#### shutil
+
+...
+
+#### tarfile
+
+...
+
+#### tempfile
+
+...
+
+#### tomllib
+
+...
+
+#### zipfile
+
+...
+
 ## License
 
 MIT License, Copyright (c) 2024 Sergei Bogdanov. See [LICENSE][github/license] file.
