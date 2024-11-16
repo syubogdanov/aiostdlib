@@ -89,7 +89,7 @@ from aiostdlib import shutil
 
 
 async def main() -> None:
-    await shutil.rmtree("/tmp/aioshutil")
+    await shutil.rmtree("/tmp/aiostdlib")
 
 
 if __name__ == "__main__":
