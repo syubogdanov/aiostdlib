@@ -7,7 +7,7 @@
 
 ## Key Features
 
-* Provides asynchronous versions of the standard libraries;
+* Provides asynchronous version of the standard library;
 * The same API as the Python's standard, blocking API;
 * Blocking IO is performed in a separate thread.
 
