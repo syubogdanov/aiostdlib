@@ -25,21 +25,76 @@ pip install aiostdlib
 
 ### Usage
 
+The `aiostdlib` API is the same as the standard library, except that it is asynchronous.
+
 #### builtins
 
-...
+```python
+import asyncio
+
+from aiostdlib import builtins
+
+
+async def main() -> None:
+    async with builtins.open("./file.txt", mode="w") as file:
+        await file.write("aiostdlib")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
 #### json
 
-...
+```python
+import asyncio
+
+from aiostdlib import builtins, json
+
+
+async def main() -> None:
+    async with builtins.open("./file.json", mode="w") as file:
+        await json.dump(["aiostdlib"], file)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
 #### pathlib
 
-...
+```python
+import asyncio
+
+from aiostdlib import pathlib
+
+
+async def main() -> None:
+    path = pathlib.Path("file.txt")
+
+    if not await path.exists():
+        await path.write_text("aiostdlib")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
 #### shutil
 
-...
+```python
+import asyncio
+
+from aiostdlib import shutil
+
+
+async def main() -> None:
+    await shutil.rmtree("/tmp/aioshutil")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
 #### tarfile
 
