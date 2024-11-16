@@ -1,6 +1,9 @@
 # Environments
 .venv/
 
+# Poetry
+poetry.lock
+
 # Python
 __pycache__/
 *.py[cod]
