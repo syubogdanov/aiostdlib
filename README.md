@@ -5,6 +5,9 @@
 [![License][shields/pypi/license]][github/license]
 [![Python Version][shields/python/version]][pypi/homepage]
 
+> [!WARNING]
+> The library is in the planning stage.
+
 ## Key Features
 
 * Provides asynchronous version of the standard library;
