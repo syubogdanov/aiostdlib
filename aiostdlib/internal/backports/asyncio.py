@@ -23,11 +23,11 @@ else:
         from collections.abc import Callable
 
 
-    _P = ParamSpec("_P")
-    _R = TypeVar("_R")
+    P = ParamSpec("P")
+    R = TypeVar("R")
 
 
-    async def to_thread(func: Callable[_P, _R], /, *args: _P.args, **kwargs: _P.kwargs) -> _R:
+    async def to_thread(func: Callable[P, R], /, *args: P.args, **kwargs: P.kwargs) -> R:
         """Asynchronously run the function in a separate thread."""
         loop = get_running_loop()
         context = copy_context()
