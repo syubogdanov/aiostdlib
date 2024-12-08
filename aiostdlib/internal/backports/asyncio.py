@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import sys
 
-from typing import TYPE_CHECKING
-
 
 __all__: list[str] = ["to_thread"]
 
@@ -15,7 +13,7 @@ else:
     from asyncio.events import get_running_loop
     from contextvars import copy_context
     from functools import partial
-    from typing import TypeVar
+    from typing import TYPE_CHECKING, TypeVar
 
     from aiostdlib.internal.backports.typing import ParamSpec
 
