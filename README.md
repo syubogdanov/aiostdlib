@@ -16,8 +16,6 @@
 
 ## Getting Started
 
-For more, see the [documentation][github/docs].
-
 ### Installation
 
 The library is available as [`aiostdlib`][pypi/homepage] on PyPI:
@@ -220,7 +218,6 @@ MIT License, Copyright (c) 2024 Sergei Bogdanov. See [LICENSE][github/license] f
 
 <!-- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -->
 
-[github/docs]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/
 [github/docs/builtins]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/builtins.md
 [github/docs/io]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/io.md
 [github/docs/json]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/json.md
