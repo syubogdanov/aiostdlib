@@ -32,6 +32,8 @@ The `aiostdlib` API is the same as the standard library, except that it is async
 
 #### builtins
 
+For more, see the [documentation][github/docs/builtins].
+
 ```python
 import asyncio
 
@@ -48,6 +50,8 @@ if __name__ == "__main__":
 ```
 
 #### io
+
+For more, see the [documentation][github/docs/io].
 
 ```python
 import asyncio
@@ -66,6 +70,8 @@ if __name__ == "__main__":
 
 #### json
 
+For more, see the [documentation][github/docs/json].
+
 ```python
 import asyncio
 
@@ -82,6 +88,8 @@ if __name__ == "__main__":
 ```
 
 #### pathlib
+
+For more, see the [documentation][github/docs/pathlib].
 
 ```python
 import asyncio
@@ -102,6 +110,8 @@ if __name__ == "__main__":
 
 #### shutil
 
+For more, see the [documentation][github/docs/shutil].
+
 ```python
 import asyncio
 
@@ -117,6 +127,8 @@ if __name__ == "__main__":
 ```
 
 #### tarfile
+
+For more, see the [documentation][github/docs/tarfile].
 
 ```python
 import asyncio
@@ -135,6 +147,8 @@ if __name__ == "__main__":
 ```
 
 #### tempfile
+
+For more, see the [documentation][github/docs/tempfile].
 
 ```python
 import asyncio
@@ -159,6 +173,8 @@ if __name__ == "__main__":
 
 #### tomllib
 
+For more, see the [documentation][github/docs/tomllib].
+
 ```python
 import asyncio
 
@@ -179,6 +195,8 @@ if __name__ == "__main__":
 ```
 
 #### zipfile
+
+For more, see the [documentation][github/docs/zipfile].
 
 ```python
 import asyncio
@@ -203,6 +221,15 @@ MIT License, Copyright (c) 2024 Sergei Bogdanov. See [LICENSE][github/license] f
 <!-- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -->
 
 [github/docs]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/
+[github/docs/builtins]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/builtins.md
+[github/docs/io]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/io.md
+[github/docs/json]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/json.md
+[github/docs/pathlib]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/pathlib.md
+[github/docs/shutil]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/shutil.md
+[github/docs/tarfile]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/tarfile.md
+[github/docs/tempfile]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/tempfile.md
+[github/docs/tomllib]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/tomllib.md
+[github/docs/zipfile]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/zipfile.md
 [github/license]: https://github.com/syubogdanov/aiostdlib/tree/main/LICENSE
 
 [pypi/homepage]: https://pypi.org/project/aiostdlib/
