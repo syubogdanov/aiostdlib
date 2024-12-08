@@ -1,9 +1,17 @@
-from collections.abc import Awaitable, Callable
+from __future__ import annotations
+
 from functools import wraps
-from typing import TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 from aiostdlib.internal.backports.asyncio import to_thread
 from aiostdlib.internal.backports.typing import ParamSpec
+
+
+if TYPE_CHECKING:
+    from collections.abc import Awaitable, Callable
+
+
+__all__: list[str] = ["to_async"]
 
 
 P = ParamSpec("P")

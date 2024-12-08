@@ -6,6 +6,15 @@ from typing import Protocol, TypeVar, Union
 from aiostdlib.internal.backports.typing import Self, TypeAlias
 
 
+__all__: list[str] = [
+    "StrOrBytesPath",
+    "SupportsAsyncRead",
+    "SupportsAsyncWrite",
+    "SupportsRead",
+    "SupportsWrite",
+]
+
+
 T_co = TypeVar("T_co", covariant=True)
 T_contra = TypeVar("T_contra", contravariant=True)
 
