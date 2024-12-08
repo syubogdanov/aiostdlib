@@ -47,6 +47,23 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+#### io
+
+```python
+import asyncio
+
+from aiostdlib import io
+
+
+async def main() -> None:
+    buffer = io.StringIO()
+    await buffer.write("aiostdlib")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
 #### json
 
 ```python
