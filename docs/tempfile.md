@@ -1,0 +1,3 @@
+# `tempfile` — Generate temporary files and directories
+
+...
