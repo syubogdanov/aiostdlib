@@ -1,7 +1,10 @@
+VENV = poetry run
+
+# Linters
 lint: ruff mypy
 
 mypy:
-	mypy aiostdlib/
+	$(VENV) mypy aiostdlib/
 
 ruff:
-	ruff check aiostdlib/
+	$(VENV) ruff check aiostdlib/
