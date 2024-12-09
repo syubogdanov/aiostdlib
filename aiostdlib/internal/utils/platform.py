@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from functools import lru_cache
 from platform import system
+
+from aiostdlib.internal.backports.functools import cache
 
 
 __all__: list[str] = ["is_windows"]
 
 
-@lru_cache(maxsize=None)
+@cache
 def is_windows() -> bool:
     """Check if the platform is `Windows`."""
     return system() == "Windows"
