@@ -11,15 +11,15 @@ if TYPE_CHECKING:
     from collections.abc import Awaitable, Callable
 
 
-__all__: list[str] = ["to_async"]
+__all__: list[str] = ["to_awaitable"]
 
 
 P = ParamSpec("P")
 R = TypeVar("R")
 
 
-def to_async(function: Callable[P, R]) -> Callable[P, Awaitable[R]]:
-    """Make the function asynchronous.
+def to_awaitable(function: Callable[P, R]) -> Callable[P, Awaitable[R]]:
+    """Make the function call awaitable.
 
     See Also
     --------
