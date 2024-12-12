@@ -1,14 +1,3 @@
-"""Provides backports for type hints.
-
-Notes
------
-* This is *the only* module in which dynamic imports are allowed.
-
-See Also
---------
-* `typing_extensions`.
-"""
-
 from __future__ import annotations
 
 import sys
