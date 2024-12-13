@@ -1,8 +1,7 @@
 from __future__ import annotations
 
+from functools import cache
 from platform import system
-
-from aiostdlib.internal.backports.functools import cache
 
 
 __all__: list[str] = ["is_windows"]

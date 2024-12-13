@@ -11,10 +11,8 @@ See Also
 
 from __future__ import annotations
 
-from typing import Tuple
-
 from aiostdlib.internal.backports.typing import TypeAlias
 
 
-Key: TypeAlias = Tuple[str, ...]
+Key: TypeAlias = tuple[str, ...]
 Pos: TypeAlias = int

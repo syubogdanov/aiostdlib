@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from asyncio.coroutines import iscoroutinefunction
+from asyncio.threads import to_thread
 from functools import wraps
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from aiostdlib.internal.backports.asyncio import to_thread
 from aiostdlib.internal.backports.typing import ParamSpec
 
 
