@@ -164,7 +164,7 @@ class Flags:
             cont = cont[k]["nested"]
         cont.pop(key[-1], None)
 
-    def set(self, key: Key, flag: int, *, recursive: bool) -> None:  # noqa: A003
+    def set(self, key: Key, flag: int, *, recursive: bool) -> None:
         cont = self._flags
         key_parent, key_stem = key[:-1], key[-1]
         for k in key_parent:
@@ -613,12 +613,10 @@ def parse_value(  # noqa: C901
         return parse_literal_str(src, pos)
 
     # Booleans
-    if char == "t":
-        if src.startswith("true", pos):
-            return pos + 4, True
-    if char == "f":
-        if src.startswith("false", pos):
-            return pos + 5, False
+    if char == "t" and src.startswith("true", pos):
+        return pos + 4, True
+    if char == "f" and src.startswith("false", pos):
+        return pos + 5, False
 
     # Arrays
     if char == "[":
@@ -671,7 +669,7 @@ def make_safe_parse_float(parse_float: Callable[[str], Any]) -> Callable[[str], 
     instead of returning illegal types.
     """
     # The default `float` callable never returns illegal types. Optimize it.
-    if parse_float is float:  # type: ignore[comparison-overlap]
+    if parse_float is float:
         return float
 
     def safe_parse_float(float_str: str) -> Any:

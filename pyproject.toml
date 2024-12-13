@@ -71,6 +71,25 @@ exempt-modules = [
 lines-after-imports = 2
 lines-between-types = 1
 
+[tool.ruff.lint.per-file-ignores]
+"aiostdlib/internal/backports/tomllib/parser.py" = [
+    "ANN401",
+    "COM812",
+    "D101",
+    "D102",
+    "D103",
+    "D202",
+    "D401",
+    "EM101",
+    "EM102",
+    "PLR0911",
+    "PLR0912",
+    "PLR2004",
+    "TRY003",
+    "TRY004",
+]
+"aiostdlib/internal/backports/tomllib/re.py" = ["ANN401", "COM812", "D103"]
+
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
 
