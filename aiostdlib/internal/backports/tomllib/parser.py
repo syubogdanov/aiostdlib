@@ -60,7 +60,7 @@ BASIC_STR_ESCAPE_REPLACEMENTS = MappingProxyType(
         "\\r": "\u000D",  # carriage return
         '\\"': "\u0022",  # quote
         "\\\\": "\u005C",  # backslash
-    }
+    },
 )
 
 
@@ -73,7 +73,7 @@ def loads(s: str, /, *, parse_float: Callable[[str], Any] = float) -> dict[str, 
         src = s.replace("\r\n", "\n")
     except (AttributeError, TypeError):
         raise TypeError(
-            f"Expected str object, not '{type(s).__qualname__}'"
+            f"Expected str object, not '{type(s).__qualname__}'",
         ) from None
     pos = 0
     out = Output(NestedDict(), Flags())
@@ -128,7 +128,7 @@ def loads(s: str, /, *, parse_float: Callable[[str], Any] = float) -> dict[str, 
             break
         if char != "\n":
             raise TOMLDecodeError(
-                "Expected newline or end of document after a statement", src, pos
+                "Expected newline or end of document after a statement", src, pos,
             )
         pos += 1
 
@@ -270,7 +270,7 @@ def skip_comment(src: str, pos: int) -> int:
         char = None
     if char == "#":
         return skip_until(
-            src, pos + 1, "\n", error_on=ILLEGAL_COMMENT_CHARS, error_on_eof=False
+            src, pos + 1, "\n", error_on=ILLEGAL_COMMENT_CHARS, error_on_eof=False,
         )
     return pos
 
@@ -299,7 +299,7 @@ def create_dict_rule(src: str, pos: int, out: Output) -> tuple[int, Key]:
 
     if not src.startswith("]", pos):
         raise TOMLDecodeError(
-            "Expected ']' at the end of a table declaration", src, pos
+            "Expected ']' at the end of a table declaration", src, pos,
         )
     return pos + 1, key
 
@@ -322,13 +322,13 @@ def create_list_rule(src: str, pos: int, out: Output) -> tuple[int, Key]:
 
     if not src.startswith("]]", pos):
         raise TOMLDecodeError(
-            "Expected ']]' at the end of an array declaration", src, pos
+            "Expected ']]' at the end of an array declaration", src, pos,
         )
     return pos + 2, key
 
 
 def key_value_rule(
-    src: str, pos: int, out: Output, header: Key, parse_float: Callable[[str], Any]
+    src: str, pos: int, out: Output, header: Key, parse_float: Callable[[str], Any],
 ) -> int:
     pos, key, value = parse_key_value_pair(src, pos, parse_float)
     key_parent, key_stem = key[:-1], key[-1]
@@ -345,7 +345,7 @@ def key_value_rule(
 
     if out.flags.is_(abs_key_parent, Flags.FROZEN):
         raise TOMLDecodeError(
-            f"Cannot mutate immutable namespace {abs_key_parent}", src, pos
+            f"Cannot mutate immutable namespace {abs_key_parent}", src, pos,
         )
 
     try:
@@ -362,7 +362,7 @@ def key_value_rule(
 
 
 def parse_key_value_pair(
-    src: str, pos: int, parse_float: Callable[[str], Any]
+    src: str, pos: int, parse_float: Callable[[str], Any],
 ) -> tuple[int, Key, Any]:
     pos, key = parse_key(src, pos)
     try:
@@ -473,7 +473,7 @@ def parse_inline_table(src: str, pos: int, parse_float: Callable[[str], Any]) ->
 
 
 def parse_basic_str_escape(
-    src: str, pos: int, *, multiline: bool = False
+    src: str, pos: int, *, multiline: bool = False,
 ) -> tuple[int, str]:
     escape_id = src[pos : pos + 2]
     pos += 2
@@ -513,7 +513,7 @@ def parse_hex_char(src: str, pos: int, hex_len: int) -> tuple[int, str]:
     hex_int = int(hex_str, 16)
     if not is_unicode_scalar_value(hex_int):
         raise TOMLDecodeError(
-            "Escaped character is not a Unicode scalar value", src, pos
+            "Escaped character is not a Unicode scalar value", src, pos,
         )
     return pos, chr(hex_int)
 
@@ -522,7 +522,7 @@ def parse_literal_str(src: str, pos: int) -> tuple[int, str]:
     pos += 1  # Skip starting apostrophe
     start_pos = pos
     pos = skip_until(
-        src, pos, "'", error_on=ILLEGAL_LITERAL_STR_CHARS, error_on_eof=True
+        src, pos, "'", error_on=ILLEGAL_LITERAL_STR_CHARS, error_on_eof=True,
     )
     return pos + 1, src[start_pos:pos]  # Skip ending apostrophe
 
@@ -591,7 +591,7 @@ def parse_basic_str(src: str, pos: int, *, multiline: bool) -> tuple[int, str]:
 
 
 def parse_value(  # noqa: C901
-    src: str, pos: int, parse_float: Callable[[str], Any]
+    src: str, pos: int, parse_float: Callable[[str], Any],
 ) -> tuple[int, Any]:
     try:
         char: str | None = src[pos]
