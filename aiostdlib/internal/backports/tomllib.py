@@ -11,7 +11,7 @@ __all__: list[str] = ["TOMLDecodeError", "loads"]
 
 
 class TOMLDecodeError(ValueError):
-    """An error raised if a document is not valid TOML."""
+    """An error raised if a document is not valid `TOML`."""
 
 
 def loads(s: str, /, *, parse_float: Callable[[str], Any] = float) -> dict[str, Any]:
