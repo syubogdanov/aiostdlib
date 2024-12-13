@@ -30,7 +30,7 @@ from aiostdlib.internal.backports.tomllib.re import (
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
 
-    from aiostdlib.internal.backports.tomllib.dtypes import Key, Pos
+    from aiostdlib.internal.backports.tomllib.dtypes import Key
 
 
 ASCII_CTRL = frozenset(chr(i) for i in range(32)) | frozenset(chr(127))
@@ -232,7 +232,7 @@ class Output(NamedTuple):
     flags: Flags
 
 
-def skip_chars(src: str, pos: Pos, chars: Iterable[str]) -> Pos:
+def skip_chars(src: str, pos: int, chars: Iterable[str]) -> int:
     try:
         while src[pos] in chars:
             pos += 1
@@ -243,12 +243,12 @@ def skip_chars(src: str, pos: Pos, chars: Iterable[str]) -> Pos:
 
 def skip_until(
     src: str,
-    pos: Pos,
+    pos: int,
     expect: str,
     *,
     error_on: frozenset[str],
     error_on_eof: bool,
-) -> Pos:
+) -> int:
     try:
         new_pos = src.index(expect, pos)
     except ValueError:
@@ -263,7 +263,7 @@ def skip_until(
     return new_pos
 
 
-def skip_comment(src: str, pos: Pos) -> Pos:
+def skip_comment(src: str, pos: int) -> int:
     try:
         char: str | None = src[pos]
     except IndexError:
@@ -275,7 +275,7 @@ def skip_comment(src: str, pos: Pos) -> Pos:
     return pos
 
 
-def skip_comments_and_array_ws(src: str, pos: Pos) -> Pos:
+def skip_comments_and_array_ws(src: str, pos: int) -> int:
     while True:
         pos_before_skip = pos
         pos = skip_chars(src, pos, TOML_WS_AND_NEWLINE)
@@ -284,7 +284,7 @@ def skip_comments_and_array_ws(src: str, pos: Pos) -> Pos:
             return pos
 
 
-def create_dict_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
+def create_dict_rule(src: str, pos: int, out: Output) -> tuple[int, Key]:
     pos += 1  # Skip "["
     pos = skip_chars(src, pos, TOML_WS)
     pos, key = parse_key(src, pos)
@@ -304,7 +304,7 @@ def create_dict_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
     return pos + 1, key
 
 
-def create_list_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
+def create_list_rule(src: str, pos: int, out: Output) -> tuple[int, Key]:
     pos += 2  # Skip "[["
     pos = skip_chars(src, pos, TOML_WS)
     pos, key = parse_key(src, pos)
@@ -328,8 +328,8 @@ def create_list_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
 
 
 def key_value_rule(
-    src: str, pos: Pos, out: Output, header: Key, parse_float: Callable[[str], Any]
-) -> Pos:
+    src: str, pos: int, out: Output, header: Key, parse_float: Callable[[str], Any]
+) -> int:
     pos, key, value = parse_key_value_pair(src, pos, parse_float)
     key_parent, key_stem = key[:-1], key[-1]
     abs_key_parent = header + key_parent
@@ -362,8 +362,8 @@ def key_value_rule(
 
 
 def parse_key_value_pair(
-    src: str, pos: Pos, parse_float: Callable[[str], Any]
-) -> tuple[Pos, Key, Any]:
+    src: str, pos: int, parse_float: Callable[[str], Any]
+) -> tuple[int, Key, Any]:
     pos, key = parse_key(src, pos)
     try:
         char: str | None = src[pos]
@@ -377,7 +377,7 @@ def parse_key_value_pair(
     return pos, key, value
 
 
-def parse_key(src: str, pos: Pos) -> tuple[Pos, Key]:
+def parse_key(src: str, pos: int) -> tuple[int, Key]:
     pos, key_part = parse_key_part(src, pos)
     key: Key = (key_part,)
     pos = skip_chars(src, pos, TOML_WS)
@@ -395,7 +395,7 @@ def parse_key(src: str, pos: Pos) -> tuple[Pos, Key]:
         pos = skip_chars(src, pos, TOML_WS)
 
 
-def parse_key_part(src: str, pos: Pos) -> tuple[Pos, str]:
+def parse_key_part(src: str, pos: int) -> tuple[int, str]:
     try:
         char: str | None = src[pos]
     except IndexError:
@@ -411,12 +411,12 @@ def parse_key_part(src: str, pos: Pos) -> tuple[Pos, str]:
     raise TOMLDecodeError("Invalid initial character for a key part", src, pos)
 
 
-def parse_one_line_basic_str(src: str, pos: Pos) -> tuple[Pos, str]:
+def parse_one_line_basic_str(src: str, pos: int) -> tuple[int, str]:
     pos += 1
     return parse_basic_str(src, pos, multiline=False)
 
 
-def parse_array(src: str, pos: Pos, parse_float: Callable[[str], Any]) -> tuple[Pos, list]:
+def parse_array(src: str, pos: int, parse_float: Callable[[str], Any]) -> tuple[int, list]:
     pos += 1
     array: list = []
 
@@ -440,7 +440,7 @@ def parse_array(src: str, pos: Pos, parse_float: Callable[[str], Any]) -> tuple[
             return pos + 1, array
 
 
-def parse_inline_table(src: str, pos: Pos, parse_float: Callable[[str], Any]) -> tuple[Pos, dict]:
+def parse_inline_table(src: str, pos: int, parse_float: Callable[[str], Any]) -> tuple[int, dict]:
     pos += 1
     nested_dict = NestedDict()
     flags = Flags()
@@ -473,8 +473,8 @@ def parse_inline_table(src: str, pos: Pos, parse_float: Callable[[str], Any]) ->
 
 
 def parse_basic_str_escape(
-    src: str, pos: Pos, *, multiline: bool = False
-) -> tuple[Pos, str]:
+    src: str, pos: int, *, multiline: bool = False
+) -> tuple[int, str]:
     escape_id = src[pos : pos + 2]
     pos += 2
     if multiline and escape_id in {"\\ ", "\\\t", "\\\n"}:
@@ -501,11 +501,11 @@ def parse_basic_str_escape(
         raise TOMLDecodeError("Unescaped '\\' in a string", src, pos) from None
 
 
-def parse_basic_str_escape_multiline(src: str, pos: Pos) -> tuple[Pos, str]:
+def parse_basic_str_escape_multiline(src: str, pos: int) -> tuple[int, str]:
     return parse_basic_str_escape(src, pos, multiline=True)
 
 
-def parse_hex_char(src: str, pos: Pos, hex_len: int) -> tuple[Pos, str]:
+def parse_hex_char(src: str, pos: int, hex_len: int) -> tuple[int, str]:
     hex_str = src[pos : pos + hex_len]
     if len(hex_str) != hex_len or not HEXDIGIT_CHARS.issuperset(hex_str):
         raise TOMLDecodeError("Invalid hex value", src, pos)
@@ -518,7 +518,7 @@ def parse_hex_char(src: str, pos: Pos, hex_len: int) -> tuple[Pos, str]:
     return pos, chr(hex_int)
 
 
-def parse_literal_str(src: str, pos: Pos) -> tuple[Pos, str]:
+def parse_literal_str(src: str, pos: int) -> tuple[int, str]:
     pos += 1  # Skip starting apostrophe
     start_pos = pos
     pos = skip_until(
@@ -527,7 +527,7 @@ def parse_literal_str(src: str, pos: Pos) -> tuple[Pos, str]:
     return pos + 1, src[start_pos:pos]  # Skip ending apostrophe
 
 
-def parse_multiline_str(src: str, pos: Pos, *, literal: bool) -> tuple[Pos, str]:
+def parse_multiline_str(src: str, pos: int, *, literal: bool) -> tuple[int, str]:
     pos += 3
     if src.startswith("\n", pos):
         pos += 1
@@ -558,7 +558,7 @@ def parse_multiline_str(src: str, pos: Pos, *, literal: bool) -> tuple[Pos, str]
     return pos, result + (delim * 2)
 
 
-def parse_basic_str(src: str, pos: Pos, *, multiline: bool) -> tuple[Pos, str]:
+def parse_basic_str(src: str, pos: int, *, multiline: bool) -> tuple[int, str]:
     if multiline:
         error_on = ILLEGAL_MULTILINE_BASIC_STR_CHARS
         parse_escapes = parse_basic_str_escape_multiline
@@ -591,8 +591,8 @@ def parse_basic_str(src: str, pos: Pos, *, multiline: bool) -> tuple[Pos, str]:
 
 
 def parse_value(  # noqa: C901
-    src: str, pos: Pos, parse_float: Callable[[str], Any]
-) -> tuple[Pos, Any]:
+    src: str, pos: int, parse_float: Callable[[str], Any]
+) -> tuple[int, Any]:
     try:
         char: str | None = src[pos]
     except IndexError:

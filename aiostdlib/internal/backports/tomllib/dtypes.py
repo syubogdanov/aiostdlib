@@ -15,4 +15,3 @@ from aiostdlib.internal.backports.typing import TypeAlias
 
 
 Key: TypeAlias = tuple[str, ...]
-Pos: TypeAlias = int
