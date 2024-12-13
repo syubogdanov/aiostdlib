@@ -39,7 +39,7 @@ from aiostdlib import builtins
 
 
 async def main() -> None:
-    async with builtins.open("./file.txt", mode="w") as file:
+    async with builtins.open("./aiostdlib.txt", mode="w") as file:
         await file.write("aiostdlib")
 
 
@@ -77,7 +77,7 @@ from aiostdlib import builtins, json
 
 
 async def main() -> None:
-    async with builtins.open("./file.json", mode="w") as file:
+    async with builtins.open("./aiostdlib.json", mode="w") as file:
         await json.dump(["aiostdlib"], file)
 
 
@@ -96,7 +96,7 @@ from aiostdlib import pathlib
 
 
 async def main() -> None:
-    path = pathlib.Path("file.txt")
+    path = pathlib.Path("./aiostdlib.txt")
 
     if not await path.exists():
         await path.write_text("aiostdlib")
@@ -117,7 +117,7 @@ from aiostdlib import shutil
 
 
 async def main() -> None:
-    await shutil.rmtree("/tmp/aiostdlib")
+    await shutil.rmtree("/tmp/aiostdlib/")
 
 
 if __name__ == "__main__":
@@ -180,7 +180,7 @@ from aiostdlib import builtins, tomllib
 
 
 async def main() -> None:
-    async with builtins.open("./file.toml", mode="rb") as file:
+    async with builtins.open("./aiostdlib.toml", mode="rb") as file:
         data = await tomllib.load(file)
 
         if "aiostdlib" not in data:
