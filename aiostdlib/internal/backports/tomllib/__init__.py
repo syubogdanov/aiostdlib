@@ -9,8 +9,6 @@ See Also
 * `tomllib`.
 """
 
-from __future__ import annotations
-
 from aiostdlib.internal.backports.tomllib.errors import TOMLDecodeError
 from aiostdlib.internal.backports.tomllib.parser import loads
 

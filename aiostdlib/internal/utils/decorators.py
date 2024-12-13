@@ -1,15 +1,10 @@
-from __future__ import annotations
-
 from asyncio.coroutines import iscoroutinefunction
 from asyncio.threads import to_thread
+from collections.abc import Callable, Coroutine
 from functools import wraps
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import Any, TypeVar
 
 from aiostdlib.internal.backports.typing import ParamSpec
-
-
-if TYPE_CHECKING:
-    from collections.abc import Callable, Coroutine
 
 
 __all__: list[str] = ["to_async_if_not"]

@@ -9,8 +9,6 @@ See Also
 * `tomllib`.
 """
 
-from __future__ import annotations
-
 from aiostdlib.internal.backports.typing import TypeAlias
 
 
