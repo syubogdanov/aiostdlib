@@ -25,7 +25,12 @@ async def load(
     *,
     parse_float: Callable[[str], Any] = float,
 ) -> dict[str, Any]:
-    """Read a `TOML` file."""
+    """Read a `TOML` file.
+
+    Notes
+    -----
+    * `fp.read` is interpreted as IO-bound.
+    """
     read = to_async_if_not(fp.read)
     bytes_: bytes = await read()
 
