@@ -1,26 +1,15 @@
-"""Provides a backport to `tomllib`.
-
-Authorship
-----------
-* MIT License, Copyright (c) 2021 Taneli Hukkinen.
-
-See Also
---------
-* `tomllib`.
-"""
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2021 Taneli Hukkinen
+# Licensed to PSF under a Contributor Agreement.
 
 from __future__ import annotations
 
-import re
-
 from datetime import date, datetime, time, timedelta, timezone, tzinfo
-from functools import cache
-from typing import TYPE_CHECKING, Any
+from functools import lru_cache
+import re
+from typing import Any
 
-
-if TYPE_CHECKING:
-    from collections.abc import Callable
-
+from aiostdlib.internal.backports.tomllib.py313.types import ParseFloat
 
 # E.g.
 # - 00:32:00.999999
@@ -95,10 +84,7 @@ def match_to_datetime(match: re.Match) -> datetime | date:
     return datetime(year, month, day, hour, minute, sec, micros, tzinfo=tz)
 
 
-# No need to limit cache size. This is only ever called on input
-# that matched RE_DATETIME, so there is an implicit bound of
-# 24 (hours) * 60 (minutes) * 2 (offset direction) = 2880.
-@cache
+@lru_cache(maxsize=None)
 def cached_tz(hour_str: str, minute_str: str, sign_str: str) -> timezone:
     sign = 1 if sign_str == "+" else -1
     return timezone(
@@ -115,7 +101,7 @@ def match_to_localtime(match: re.Match) -> time:
     return time(int(hour_str), int(minute_str), int(sec_str), micros)
 
 
-def match_to_number(match: re.Match, parse_float: Callable[[str], Any]) -> Any:
+def match_to_number(match: re.Match, parse_float: ParseFloat) -> Any:
     if match.group("floatpart"):
         return parse_float(match.group())
     return int(match.group(), 0)
