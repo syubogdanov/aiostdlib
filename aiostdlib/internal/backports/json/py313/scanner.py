@@ -1,10 +1,6 @@
-"""JSON token scanner
-"""
+"""JSON token scanner"""
+
 import re
-try:
-    from _json import make_scanner as c_make_scanner
-except ImportError:
-    c_make_scanner = None
 
 __all__ = ['make_scanner']
 
@@ -12,7 +8,7 @@ NUMBER_RE = re.compile(
     r'(-?(?:0|[1-9][0-9]*))(\.[0-9]+)?([eE][-+]?[0-9]+)?',
     (re.VERBOSE | re.MULTILINE | re.DOTALL))
 
-def py_make_scanner(context):
+def make_scanner(context):
     parse_object = context.parse_object
     parse_array = context.parse_array
     parse_string = context.parse_string
@@ -69,5 +65,3 @@ def py_make_scanner(context):
             memo.clear()
 
     return scan_once
-
-make_scanner = c_make_scanner or py_make_scanner

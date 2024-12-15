@@ -3,10 +3,6 @@
 import re
 
 from aiostdlib.internal.backports.json.py313 import scanner
-try:
-    from _json import scanstring as c_scanstring
-except ImportError:
-    c_scanstring = None
 
 __all__ = ['JSONDecoder', 'JSONDecodeError']
 
@@ -67,7 +63,7 @@ def _decode_uXXXX(s, pos, _m=HEXDIGITS.match):
     msg = "Invalid \\uXXXX escape"
     raise JSONDecodeError(msg, s, pos)
 
-def py_scanstring(s, end, strict=True,
+def scanstring(s, end, strict=True,
         _b=BACKSLASH, _m=STRINGCHUNK.match):
     """Scan the string s for a JSON string. End is the index of the
     character in s after the quote that started the JSON string.
@@ -126,9 +122,6 @@ def py_scanstring(s, end, strict=True,
         _append(char)
     return ''.join(chunks), end
 
-
-# Use speedup if available
-scanstring = c_scanstring or py_scanstring
 
 WHITESPACE = re.compile(r'[ \t\n\r]*', FLAGS)
 WHITESPACE_STR = ' \t\n\r'
