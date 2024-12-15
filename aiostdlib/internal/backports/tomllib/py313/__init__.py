@@ -5,6 +5,3 @@
 __all__ = ("loads", "TOMLDecodeError")
 
 from aiostdlib.internal.backports.tomllib.py313.parser import TOMLDecodeError, loads
-
-# Pretend this exception was created here.
-TOMLDecodeError.__module__ = __name__
