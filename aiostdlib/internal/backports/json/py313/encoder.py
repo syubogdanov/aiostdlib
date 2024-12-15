@@ -2,6 +2,11 @@
 """
 import re
 
+from collections.abc import Iterator
+from typing import Any
+
+from aiostdlib.internal.backports.typing import Self
+
 
 ESCAPE = re.compile(r'[\x00-\x1f\\"\b\f\n\r\t]')
 ESCAPE_ASCII = re.compile(r'([\\"]|[^\ -~])')
@@ -22,20 +27,18 @@ del i
 
 INFINITY = float('inf')
 
-def encode_basestring(s):
-    """Return a JSON representation of a Python string
-
-    """
-    def replace(match):
+def encode_basestring(s: str) -> str:
+    """Return a JSON representation of a Python string"""
+    def replace(match: re.Match[str]) -> str:
         return ESCAPE_DCT[match.group(0)]
     return '"' + ESCAPE.sub(replace, s) + '"'
 
 
-def encode_basestring_ascii(s):
+def encode_basestring_ascii(s: str) -> str:
     """Return an ASCII-only JSON representation of a Python string
 
     """
-    def replace(match):
+    def replace(match: re.Match[str]) -> str:
         s = match.group(0)
         try:
             return ESCAPE_DCT[s]
@@ -140,7 +143,7 @@ class JSONEncoder(object):
         if default is not None:
             self.default = default
 
-    def default(self, o):
+    def default(self: Self, o: Any) -> Any:
         """Implement this method in a subclass such that it returns
         a serializable object for ``o``, or calls the base implementation
         (to raise a ``TypeError``).
@@ -162,7 +165,7 @@ class JSONEncoder(object):
         raise TypeError(f'Object of type {o.__class__.__name__} '
                         f'is not JSON serializable')
 
-    def encode(self, o):
+    def encode(self: Self, o: Any) -> str:
         """Return a JSON string representation of a Python data structure.
 
         >>> from json.encoder import JSONEncoder
@@ -184,7 +187,7 @@ class JSONEncoder(object):
             chunks = list(chunks)
         return ''.join(chunks)
 
-    def iterencode(self, o, _one_shot=False):
+    def iterencode(self: Self, o: Any, _one_shot: bool = False) -> Iterator[str]:
         """Encode the given object and yield each string
         representation as available.
 
