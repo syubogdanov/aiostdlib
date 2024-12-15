@@ -59,7 +59,7 @@ BACKSLASH = {
     'b': '\b', 'f': '\f', 'n': '\n', 'r': '\r', 't': '\t',
 }
 
-def _decode_uXXXX(s, pos, _m=HEXDIGITS.match):
+def _decode_uXXXX(s: str, pos: int, _m=HEXDIGITS.match) -> int:
     esc = _m(s, pos + 1)
     if esc is not None:
         try:
@@ -69,8 +69,13 @@ def _decode_uXXXX(s, pos, _m=HEXDIGITS.match):
     msg = "Invalid \\uXXXX escape"
     raise JSONDecodeError(msg, s, pos)
 
-def scanstring(s, end, strict=True,
-        _b=BACKSLASH, _m=STRINGCHUNK.match):
+def scanstring(
+    s: str,
+    end: int,
+    strict: bool = True,
+    _b: dict[str, str] = BACKSLASH,
+    _m=STRINGCHUNK.match,
+) -> tuple[str, int]:
     """Scan the string s for a JSON string. End is the index of the
     character in s after the quote that started the JSON string.
     Unescapes all valid JSON string escape sequences and raises ValueError
@@ -133,8 +138,16 @@ WHITESPACE = re.compile(r'[ \t\n\r]*', FLAGS)
 WHITESPACE_STR = ' \t\n\r'
 
 
-def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
-               memo=None, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
+def JSONObject(
+    s_and_end: tuple[str, int],
+    strict: bool,
+    scan_once,
+    object_hook,
+    object_pairs_hook,
+    memo=None,
+    _w=WHITESPACE.match,
+    _ws: str = WHITESPACE_STR
+):
     s, end = s_and_end
     pairs = []
     pairs_append = pairs.append
@@ -217,7 +230,12 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
         pairs = object_hook(pairs)
     return pairs, end
 
-def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
+def JSONArray(
+    s_and_end: tuple[str, int],
+    scan_once,
+    _w=WHITESPACE.match,
+    _ws: str = WHITESPACE_STR,
+):
     s, end = s_and_end
     values = []
     nextchar = s[end:end + 1]
@@ -342,7 +360,7 @@ class JSONDecoder(object):
         self.memo = {}
         self.scan_once = scanner.make_scanner(self)
 
-    def decode(self: Self, s: str, _w=WHITESPACE.match):
+    def decode(self: Self, s: str, _w=WHITESPACE.match) -> Any:
         """Return the Python representation of ``s`` (a ``str`` instance
         containing a JSON document).
 
