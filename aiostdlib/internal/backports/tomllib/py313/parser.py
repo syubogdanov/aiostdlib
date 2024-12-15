@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 import string
 from types import MappingProxyType
-from typing import Any, BinaryIO, NamedTuple
+from typing import Any, NamedTuple
 
 from aiostdlib.internal.backports.tomllib.py313.re import (
     RE_DATETIME,
@@ -52,18 +52,6 @@ BASIC_STR_ESCAPE_REPLACEMENTS = MappingProxyType(
 
 class TOMLDecodeError(ValueError):
     """An error raised if a document is not valid TOML."""
-
-
-def load(fp: BinaryIO, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:
-    """Parse TOML from a binary file object."""
-    b = fp.read()
-    try:
-        s = b.decode()
-    except AttributeError:
-        raise TypeError(
-            "File must be opened in binary mode, e.g. use `open('foo.toml', 'rb')`"
-        ) from None
-    return loads(s, parse_float=parse_float)
 
 
 def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # noqa: C901
