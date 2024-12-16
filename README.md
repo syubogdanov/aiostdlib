@@ -28,7 +28,7 @@ pip install aiostdlib
 
 The `aiostdlib` API is the same as the standard library, except that it is asynchronous.
 
-#### builtins
+#### [SOON] builtins
 
 For more, see the [documentation][github/docs/builtins].
 
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-#### pathlib
+#### [SOON] pathlib
 
 For more, see the [documentation][github/docs/pathlib].
 
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-#### shutil
+#### [SOON] shutil
 
 For more, see the [documentation][github/docs/shutil].
 
@@ -105,7 +105,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-#### tarfile
+#### [SOON] tarfile
 
 For more, see the [documentation][github/docs/tarfile].
 
@@ -125,7 +125,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-#### tempfile
+#### [SOON] tempfile
 
 For more, see the [documentation][github/docs/tempfile].
 
@@ -173,7 +173,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-#### zipfile
+#### [SOON] zipfile
 
 For more, see the [documentation][github/docs/zipfile].
 
