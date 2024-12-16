@@ -10,7 +10,7 @@
 
 ## Key Features
 
-* Provides asynchronous version of the standard library;
+* Provides asynchronous version of the standard library (v3.13);
 * The same API as the Python's standard, blocking API;
 * Blocking IO is performed in a separate thread.
 
