@@ -1,40 +1,61 @@
-"""Implementation of JSONDecoder"""
-
-from __future__ import annotations
+"""Implementation of JSONDecoder."""
 
 import re
 
-from collections.abc import Callable
-from typing import Any
+from aiostdlib.internal.backports.json.src.python313 import scanner
 
-from aiostdlib.internal.backports.json.py313 import scanner
-from aiostdlib.internal.backports.json.src.errors import JSONDecodeError
-from aiostdlib.internal.backports.typing import Self
 
-__all__ = ['JSONDecoder', 'JSONDecodeError']
+__all__ = ["JSONDecodeError", "JSONDecoder"]
 
 FLAGS = re.VERBOSE | re.MULTILINE | re.DOTALL
 
-NaN = float('nan')
-PosInf = float('inf')
-NegInf = float('-inf')
+NaN = float("nan")
+PosInf = float("inf")
+NegInf = float("-inf")
+
+
+class JSONDecodeError(ValueError):
+    """Subclass of ValueError with the following additional properties:
+
+    msg: The unformatted error message
+    doc: The JSON document being parsed
+    pos: The start index of doc where parsing failed
+    lineno: The line corresponding to pos
+    colno: The column corresponding to pos
+
+    """
+
+    # Note that this exception is used from _json
+    def __init__(self, msg, doc, pos) -> None:
+        lineno = doc.count('\n', 0, pos) + 1
+        colno = pos - doc.rfind('\n', 0, pos)
+        errmsg = "%s: line %d column %d (char %d)" % (msg, lineno, colno, pos)
+        ValueError.__init__(self, errmsg)
+        self.msg = msg
+        self.doc = doc
+        self.pos = pos
+        self.lineno = lineno
+        self.colno = colno
+
+    def __reduce__(self):
+        return self.__class__, (self.msg, self.doc, self.pos)
 
 
 _CONSTANTS = {
-    '-Infinity': NegInf,
-    'Infinity': PosInf,
-    'NaN': NaN,
+    "-Infinity": NegInf,
+    "Infinity": PosInf,
+    "NaN": NaN,
 }
 
 
-HEXDIGITS = re.compile(r'[0-9A-Fa-f]{4}', FLAGS)
+HEXDIGITS = re.compile(r"[0-9A-Fa-f]{4}", FLAGS)
 STRINGCHUNK = re.compile(r'(.*?)(["\\\x00-\x1f])', FLAGS)
 BACKSLASH = {
-    '"': '"', '\\': '\\', '/': '/',
-    'b': '\b', 'f': '\f', 'n': '\n', 'r': '\r', 't': '\t',
+    '"': '"', "\\": "\\", "/": "/",
+    "b": "\b", "f": "\f", "n": "\n", "r": "\r", "t": "\t",
 }
 
-def _decode_uXXXX(s: str, pos: int, _m=HEXDIGITS.match) -> int:
+def _decode_uXXXX(s, pos, _m=HEXDIGITS.match):
     esc = _m(s, pos + 1)
     if esc is not None:
         try:
@@ -44,13 +65,8 @@ def _decode_uXXXX(s: str, pos: int, _m=HEXDIGITS.match) -> int:
     msg = "Invalid \\uXXXX escape"
     raise JSONDecodeError(msg, s, pos)
 
-def scanstring(
-    s: str,
-    end: int,
-    strict: bool = True,
-    _b: dict[str, str] = BACKSLASH,
-    _m=STRINGCHUNK.match,
-) -> tuple[str, int]:
+def scanstring(s, end, strict=True,
+        _b=BACKSLASH, _m=STRINGCHUNK.match):
     """Scan the string s for a JSON string. End is the index of the
     character in s after the quote that started the JSON string.
     Unescapes all valid JSON string escape sequences and raises ValueError
@@ -58,7 +74,8 @@ def scanstring(
     control characters are allowed in the string.
 
     Returns a tuple of the decoded string and the index of the character in s
-    after the end quote."""
+    after the end quote.
+    """
     chunks = []
     _append = chunks.append
     begin = end - 1
@@ -75,10 +92,10 @@ def scanstring(
         # or a backslash denoting that an escape sequence follows
         if terminator == '"':
             break
-        elif terminator != '\\':
+        elif terminator != "\\":
             if strict:
                 #msg = "Invalid control character %r at" % (terminator,)
-                msg = "Invalid control character {0!r} at".format(terminator)
+                msg = f"Invalid control character {terminator!r} at"
                 raise JSONDecodeError(msg, s, end)
             else:
                 _append(terminator)
@@ -93,36 +110,28 @@ def scanstring(
             try:
                 char = _b[esc]
             except KeyError:
-                msg = "Invalid \\escape: {0!r}".format(esc)
+                msg = f"Invalid \\escape: {esc!r}"
                 raise JSONDecodeError(msg, s, end)
             end += 1
         else:
             uni = _decode_uXXXX(s, end)
             end += 5
-            if 0xd800 <= uni <= 0xdbff and s[end:end + 2] == '\\u':
+            if 0xd800 <= uni <= 0xdbff and s[end:end + 2] == "\\u":
                 uni2 = _decode_uXXXX(s, end + 1)
                 if 0xdc00 <= uni2 <= 0xdfff:
                     uni = 0x10000 + (((uni - 0xd800) << 10) | (uni2 - 0xdc00))
                     end += 6
             char = chr(uni)
         _append(char)
-    return ''.join(chunks), end
+    return "".join(chunks), end
 
 
-WHITESPACE = re.compile(r'[ \t\n\r]*', FLAGS)
-WHITESPACE_STR = ' \t\n\r'
+WHITESPACE = re.compile(r"[ \t\n\r]*", FLAGS)
+WHITESPACE_STR = " \t\n\r"
 
 
-def JSONObject(
-    s_and_end: tuple[str, int],
-    strict: bool,
-    scan_once,
-    object_hook,
-    object_pairs_hook,
-    memo=None,
-    _w=WHITESPACE.match,
-    _ws: str = WHITESPACE_STR
-):
+def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
+               memo=None, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
     s, end = s_and_end
     pairs = []
     pairs_append = pairs.append
@@ -156,9 +165,9 @@ def JSONObject(
         key = memo_get(key, key)
         # To skip some function call overhead we optimize the fast paths where
         # the JSON key separator is ": " or just ":".
-        if s[end:end + 1] != ':':
+        if s[end:end + 1] != ":":
             end = _w(s, end).end()
-            if s[end:end + 1] != ':':
+            if s[end:end + 1] != ":":
                 raise JSONDecodeError("Expecting ':' delimiter", s, end)
         end += 1
 
@@ -181,19 +190,19 @@ def JSONObject(
                 end = _w(s, end + 1).end()
                 nextchar = s[end]
         except IndexError:
-            nextchar = ''
+            nextchar = ""
         end += 1
 
-        if nextchar == '}':
+        if nextchar == "}":
             break
-        elif nextchar != ',':
+        elif nextchar != ",":
             raise JSONDecodeError("Expecting ',' delimiter", s, end - 1)
         comma_idx = end - 1
         end = _w(s, end).end()
         nextchar = s[end:end + 1]
         end += 1
         if nextchar != '"':
-            if nextchar == '}':
+            if nextchar == "}":
                 raise JSONDecodeError("Illegal trailing comma before end of object", s, comma_idx)
             raise JSONDecodeError(
                 "Expecting property name enclosed in double quotes", s, end - 1)
@@ -205,12 +214,7 @@ def JSONObject(
         pairs = object_hook(pairs)
     return pairs, end
 
-def JSONArray(
-    s_and_end: tuple[str, int],
-    scan_once,
-    _w=WHITESPACE.match,
-    _ws: str = WHITESPACE_STR,
-):
+def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
     s, end = s_and_end
     values = []
     nextchar = s[end:end + 1]
@@ -252,7 +256,7 @@ def JSONArray(
 
 
 class JSONDecoder(object):
-    """Simple JSON <https://json.org> decoder
+    """Simple JSON <https://json.org> decoder.
 
     Performs the following translations in decoding by default:
 
@@ -281,16 +285,9 @@ class JSONDecoder(object):
 
     """
 
-    def __init__(
-        self: Self,
-        *,
-        object_hook: Callable[[dict[str, Any]], Any] | None = None,
-        parse_float: Callable[[str], Any] | None = None,
-        parse_int: Callable[[str], Any] | None = None,
-        parse_constant: Callable[[str], Any] | None = None,
-        strict: bool = True,
-        object_pairs_hook: Callable[[list[tuple[str, Any]]], Any] | None = None,
-    ) -> None:
+    def __init__(self, *, object_hook=None, parse_float=None,
+            parse_int=None, parse_constant=None, strict=True,
+            object_pairs_hook=None):
         """``object_hook``, if specified, will be called with the result
         of every JSON object decoded and its return value will be used in
         place of the given ``dict``.  This can be used to provide custom
@@ -335,7 +332,8 @@ class JSONDecoder(object):
         self.memo = {}
         self.scan_once = scanner.make_scanner(self)
 
-    def decode(self: Self, s: str, _w=WHITESPACE.match) -> Any:
+
+    def decode(self, s, _w=WHITESPACE.match):
         """Return the Python representation of ``s`` (a ``str`` instance
         containing a JSON document).
 
@@ -346,7 +344,7 @@ class JSONDecoder(object):
             raise JSONDecodeError("Extra data", s, end)
         return obj
 
-    def raw_decode(self: Self, s: str, idx: int = 0) -> tuple[Any, int]:
+    def raw_decode(self, s, idx=0):
         """Decode a JSON document from ``s`` (a ``str`` beginning with
         a JSON document) and return a 2-tuple of the Python
         representation and the index in ``s`` where the document ended.

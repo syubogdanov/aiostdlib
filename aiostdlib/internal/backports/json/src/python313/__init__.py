@@ -86,31 +86,32 @@ Specializing JSON object encoding::
     '[2.0, 1.0]'
 
 
-Using json from the shell to validate and pretty-print::
+Using json.tool from the shell to validate and pretty-print::
 
-    $ echo '{"json":"obj"}' | python -m json
+    $ echo '{"json":"obj"}' | python -m json.tool
     {
         "json": "obj"
     }
-    $ echo '{ 1.2:3.4}' | python -m json
+    $ echo '{ 1.2:3.4}' | python -m json.tool
     Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
 """
+__version__ = "2.0.9"
+__all__ = [
+    "JSONDecodeError",
+    "JSONDecoder",
+    "JSONEncoder",
+    "dump",
+    "dumps",
+    "load",
+    "loads",
+]
 
-from __future__ import annotations
+__author__ = "Bob Ippolito <bob@redivi.com>"
 
 import codecs
 
-from collections.abc import Callable
-from typing import Any
-
-from aiostdlib.internal.backports.json.py313.decoder import JSONDecoder, JSONDecodeError
-from aiostdlib.internal.backports.json.py313.encoder import JSONEncoder
-
-
-__author__ = 'Bob Ippolito <bob@redivi.com>'
-__version__ = '2.0.9'
-
-__all__ = ['dumps', 'loads', 'JSONDecoder', 'JSONDecodeError', 'JSONEncoder']
+from aiostdlib.internal.backports.json.src.python313.decoder import JSONDecodeError, JSONDecoder
+from aiostdlib.internal.backports.json.src.python313.encoder import JSONEncoder
 
 
 _default_encoder = JSONEncoder(
@@ -185,47 +186,38 @@ def dumps(obj, *, skipkeys=False, ensure_ascii=True, check_circular=True,
 _default_decoder = JSONDecoder(object_hook=None, object_pairs_hook=None)
 
 
-def detect_encoding(b: bytes | bytearray) -> str:
+def detect_encoding(b):
     bstartswith = b.startswith
     if bstartswith((codecs.BOM_UTF32_BE, codecs.BOM_UTF32_LE)):
-        return 'utf-32'
+        return "utf-32"
     if bstartswith((codecs.BOM_UTF16_BE, codecs.BOM_UTF16_LE)):
-        return 'utf-16'
+        return "utf-16"
     if bstartswith(codecs.BOM_UTF8):
-        return 'utf-8-sig'
+        return "utf-8-sig"
 
     if len(b) >= 4:
         if not b[0]:
             # 00 00 -- -- - utf-32-be
             # 00 XX -- -- - utf-16-be
-            return 'utf-16-be' if b[1] else 'utf-32-be'
+            return "utf-16-be" if b[1] else "utf-32-be"
         if not b[1]:
             # XX 00 00 00 - utf-32-le
             # XX 00 00 XX - utf-16-le
             # XX 00 XX -- - utf-16-le
-            return 'utf-16-le' if b[2] or b[3] else 'utf-32-le'
+            return "utf-16-le" if b[2] or b[3] else "utf-32-le"
     elif len(b) == 2:
         if not b[0]:
             # 00 XX - utf-16-be
-            return 'utf-16-be'
+            return "utf-16-be"
         if not b[1]:
             # XX 00 - utf-16-le
-            return 'utf-16-le'
+            return "utf-16-le"
     # default
-    return 'utf-8'
+    return "utf-8"
 
 
-def loads(
-    s : str | bytes | bytearray,
-    *,
-    cls: type[JSONDecoder] | None = None,
-    object_hook: Callable[[dict[Any, Any]], Any] | None = None,
-    parse_float: Callable[[str], Any] | None = None,
-    parse_int: Callable[[str], Any] | None = None,
-    parse_constant: Callable[[str], Any] | None = None,
-    object_pairs_hook: Callable[[list[tuple[Any, Any]]], Any] | None = None,
-    **kw: Any,
-) -> Any:
+def loads(s, *, cls=None, object_hook=None, parse_float=None,
+        parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
     """Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance
     containing a JSON document) to a Python object.
 
@@ -259,14 +251,14 @@ def loads(
     kwarg; otherwise ``JSONDecoder`` is used.
     """
     if isinstance(s, str):
-        if s.startswith('\ufeff'):
+        if s.startswith("\ufeff"):
             raise JSONDecodeError("Unexpected UTF-8 BOM (decode using utf-8-sig)",
                                   s, 0)
     else:
         if not isinstance(s, (bytes, bytearray)):
-            raise TypeError(f'the JSON object must be str, bytes or bytearray, '
-                            f'not {s.__class__.__name__}')
-        s = s.decode(detect_encoding(s), 'surrogatepass')
+            raise TypeError(f"the JSON object must be str, bytes or bytearray, "
+                            f"not {s.__class__.__name__}")
+        s = s.decode(detect_encoding(s), "surrogatepass")
 
     if (cls is None and object_hook is None and
             parse_int is None and parse_float is None and
@@ -275,13 +267,13 @@ def loads(
     if cls is None:
         cls = JSONDecoder
     if object_hook is not None:
-        kw['object_hook'] = object_hook
+        kw["object_hook"] = object_hook
     if object_pairs_hook is not None:
-        kw['object_pairs_hook'] = object_pairs_hook
+        kw["object_pairs_hook"] = object_pairs_hook
     if parse_float is not None:
-        kw['parse_float'] = parse_float
+        kw["parse_float"] = parse_float
     if parse_int is not None:
-        kw['parse_int'] = parse_int
+        kw["parse_int"] = parse_int
     if parse_constant is not None:
-        kw['parse_constant'] = parse_constant
+        kw["parse_constant"] = parse_constant
     return cls(**kw).decode(s)

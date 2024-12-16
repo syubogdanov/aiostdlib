@@ -5,6 +5,7 @@
 from collections.abc import Callable
 from typing import Any
 
+
 # Type annotations
 ParseFloat = Callable[[str], Any]
 Key = tuple[str, ...]

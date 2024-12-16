@@ -4,12 +4,16 @@
 
 from __future__ import annotations
 
+import re
+
 from datetime import date, datetime, time, timedelta, timezone, tzinfo
 from functools import lru_cache
-import re
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from aiostdlib.internal.backports.tomllib.py313.types import ParseFloat
+
+if TYPE_CHECKING:
+    from aiostdlib.internal.backports.tomllib.src.python313.types import ParseFloat
+
 
 # E.g.
 # - 00:32:00.999999

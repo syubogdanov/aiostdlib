@@ -4,12 +4,12 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable
 import string
-from types import MappingProxyType
-from typing import Any, NamedTuple
 
-from aiostdlib.internal.backports.tomllib.py313.re import (
+from types import MappingProxyType
+from typing import TYPE_CHECKING, Any, NamedTuple
+
+from aiostdlib.internal.backports.tomllib.src.python313.re import (
     RE_DATETIME,
     RE_LOCALTIME,
     RE_NUMBER,
@@ -17,7 +17,13 @@ from aiostdlib.internal.backports.tomllib.py313.re import (
     match_to_localtime,
     match_to_number,
 )
-from aiostdlib.internal.backports.tomllib.py313.types import Key, ParseFloat, Pos
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from aiostdlib.internal.backports.tomllib.src.python313.types import Key, ParseFloat, Pos
+
 
 ASCII_CTRL = frozenset(chr(i) for i in range(32)) | frozenset(chr(127))
 
@@ -667,7 +673,7 @@ def make_safe_parse_float(parse_float: ParseFloat) -> ParseFloat:
     instead of returning illegal types.
     """
     # The default `float` callable never returns illegal types. Optimize it.
-    if parse_float is float:
+    if parse_float is float:  # type: ignore[comparison-overlap]
         return float
 
     def safe_parse_float(float_str: str) -> Any:

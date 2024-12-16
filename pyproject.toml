@@ -71,7 +71,7 @@ lines-after-imports = 2
 lines-between-types = 1
 
 [tool.ruff.lint.per-file-ignores]
-"aiostdlib/internal/backports/*/py3*/**/*.py" = ["ALL"]
+"aiostdlib/internal/backports/*/src/python3*/**/*.py" = ["ALL"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
