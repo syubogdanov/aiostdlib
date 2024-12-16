@@ -1,8 +1,14 @@
 """Implementation of JSONDecoder."""
 
+from __future__ import annotations
+
 import re
 
+from collections.abc import Callable
+from typing import Any
+
 from aiostdlib.internal.backports.json.src.python313 import scanner
+from aiostdlib.internal.backports.typing import Self
 
 
 __all__ = ["JSONDecodeError", "JSONDecoder"]
@@ -26,7 +32,7 @@ class JSONDecodeError(ValueError):
     """
 
     # Note that this exception is used from _json
-    def __init__(self, msg, doc, pos) -> None:
+    def __init__(self: Self, msg: str, doc: str, pos: int) -> None:
         lineno = doc.count('\n', 0, pos) + 1
         colno = pos - doc.rfind('\n', 0, pos)
         errmsg = "%s: line %d column %d (char %d)" % (msg, lineno, colno, pos)
@@ -37,7 +43,7 @@ class JSONDecodeError(ValueError):
         self.lineno = lineno
         self.colno = colno
 
-    def __reduce__(self):
+    def __reduce__(self: Self) -> tuple[type[Self], tuple[str, str, int]]:
         return self.__class__, (self.msg, self.doc, self.pos)
 
 
@@ -285,9 +291,16 @@ class JSONDecoder(object):
 
     """
 
-    def __init__(self, *, object_hook=None, parse_float=None,
-            parse_int=None, parse_constant=None, strict=True,
-            object_pairs_hook=None):
+    def __init__(
+        self: Self,
+        *,
+        object_hook: Callable[[dict[str, Any]], Any] | None = None,
+        parse_float: Callable[[str], Any] | None = None,
+        parse_int: Callable[[str], Any] | None = None,
+        parse_constant: Callable[[str], Any] | None = None,
+        strict: bool = True,
+        object_pairs_hook: Callable[[list[tuple[str, Any]]], Any] | None = None,
+    ) -> None:
         """``object_hook``, if specified, will be called with the result
         of every JSON object decoded and its return value will be used in
         place of the given ``dict``.  This can be used to provide custom
@@ -332,8 +345,7 @@ class JSONDecoder(object):
         self.memo = {}
         self.scan_once = scanner.make_scanner(self)
 
-
-    def decode(self, s, _w=WHITESPACE.match):
+    def decode(self: Self, s: str, _w=WHITESPACE.match) -> Any:
         """Return the Python representation of ``s`` (a ``str`` instance
         containing a JSON document).
 
@@ -344,7 +356,7 @@ class JSONDecoder(object):
             raise JSONDecodeError("Extra data", s, end)
         return obj
 
-    def raw_decode(self, s, idx=0):
+    def raw_decode(self: Self, s: str, idx: int = 0) -> tuple[Any, int]:
         """Decode a JSON document from ``s`` (a ``str`` beginning with
         a JSON document) and return a 2-tuple of the Python
         representation and the index in ``s`` where the document ended.

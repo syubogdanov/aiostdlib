@@ -1,6 +1,13 @@
 """Implementation of JSONEncoder."""
 
+from __future__ import annotations
+
 import re
+
+from collections.abc import Callable, Iterator
+from typing import Any
+
+from aiostdlib.internal.backports.typing import Self
 
 
 ESCAPE = re.compile(r'[\x00-\x1f\\"\b\f\n\r\t]')
@@ -81,9 +88,18 @@ class JSONEncoder(object):
     item_separator = ", "
     key_separator = ": "
 
-    def __init__(self, *, skipkeys=False, ensure_ascii=True,
-            check_circular=True, allow_nan=True, sort_keys=False,
-            indent=None, separators=None, default=None) -> None:
+    def __init__(
+        self: Self,
+        *,
+        skipkeys: bool = False,
+        ensure_ascii: bool = True,
+        check_circular: bool = True,
+        allow_nan: bool = True,
+        sort_keys: bool = False,
+        indent: int | str | None = None,
+        separators: tuple[str, str] | None = None,
+        default: Callable[..., Any] | None = None,
+    ) -> None:
         """Constructor for JSONEncoder, with sensible defaults.
 
         If skipkeys is false, then it is a TypeError to attempt
@@ -135,7 +151,7 @@ class JSONEncoder(object):
         if default is not None:
             self.default = default
 
-    def default(self, o):
+    def default(self: Self, o: Any) -> Any:
         """Implement this method in a subclass such that it returns
         a serializable object for ``o``, or calls the base implementation
         (to raise a ``TypeError``).
@@ -157,7 +173,7 @@ class JSONEncoder(object):
         raise TypeError(f'Object of type {o.__class__.__name__} '
                         f'is not JSON serializable')
 
-    def encode(self, o):
+    def encode(self: Self, o: Any) -> str:
         """Return a JSON string representation of a Python data structure.
 
         >>> from json.encoder import JSONEncoder
@@ -179,7 +195,7 @@ class JSONEncoder(object):
             chunks = list(chunks)
         return ''.join(chunks)
 
-    def iterencode(self, o, _one_shot=False):
+    def iterencode(self: Self, o: Any, _one_shot: bool = False) -> Iterator[str]:
         """Encode the given object and yield each string
         representation as available.
 

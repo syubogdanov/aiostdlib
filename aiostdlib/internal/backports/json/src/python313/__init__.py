@@ -95,7 +95,21 @@ Using json.tool from the shell to validate and pretty-print::
     $ echo '{ 1.2:3.4}' | python -m json.tool
     Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
 """
+
+from __future__ import annotations
+
+import codecs
+
+from collections.abc import Callable
+from typing import Any
+
+from aiostdlib.internal.backports.json.src.python313.decoder import JSONDecodeError, JSONDecoder
+from aiostdlib.internal.backports.json.src.python313.encoder import JSONEncoder
+
+
+__author__ = "Bob Ippolito <bob@redivi.com>"
 __version__ = "2.0.9"
+
 __all__ = [
     "JSONDecodeError",
     "JSONDecoder",
@@ -105,13 +119,6 @@ __all__ = [
     "load",
     "loads",
 ]
-
-__author__ = "Bob Ippolito <bob@redivi.com>"
-
-import codecs
-
-from aiostdlib.internal.backports.json.src.python313.decoder import JSONDecodeError, JSONDecoder
-from aiostdlib.internal.backports.json.src.python313.encoder import JSONEncoder
 
 
 _default_encoder = JSONEncoder(
@@ -125,9 +132,20 @@ _default_encoder = JSONEncoder(
 )
 
 
-def dumps(obj, *, skipkeys=False, ensure_ascii=True, check_circular=True,
-        allow_nan=True, cls=None, indent=None, separators=None,
-        default=None, sort_keys=False, **kw):
+def dumps(
+    obj: Any,
+    *,
+    skipkeys: bool = False,
+    ensure_ascii: bool = True,
+    check_circular: bool = True,
+    allow_nan: bool = True,
+    cls: type[JSONEncoder] | None = None,
+    indent: None | int | str = None,
+    separators: tuple[str, str] | None = None,
+    default: Callable[[Any], Any] | None = None,
+    sort_keys: bool = False,
+    **kw: Any,
+) -> str:
     """Serialize ``obj`` to a JSON formatted ``str``.
 
     If ``skipkeys`` is true then ``dict`` keys that are not basic types
@@ -216,8 +234,17 @@ def detect_encoding(b):
     return "utf-8"
 
 
-def loads(s, *, cls=None, object_hook=None, parse_float=None,
-        parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
+def loads(
+    s: str | bytes | bytearray,
+    *,
+    cls: type[JSONDecoder] | None = None,
+    object_hook: Callable[[dict[Any, Any]], Any] | None = None,
+    parse_float: Callable[[str], Any] | None = None,
+    parse_int: Callable[[str], Any] | None = None,
+    parse_constant: Callable[[str], Any] | None = None,
+    object_pairs_hook: Callable[[list[tuple[Any, Any]]], Any] | None = None,
+    **kw: Any,
+) -> Any:
     """Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance
     containing a JSON document) to a Python object.
 
