@@ -1,10 +1,3 @@
-"""Provides a backport to `typing`.
-
-See Also
---------
-* `typing`.
-"""
-
 import sys
 
 
