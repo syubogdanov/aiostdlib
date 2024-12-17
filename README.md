@@ -10,7 +10,7 @@
 
 ## Key Features
 
-* Provides asynchronous version of the standard library (v3.13);
+* Provides asynchronous version of the standard library;
 * The same API as the Python's standard, blocking API;
 * Blocking IO is performed in a separate thread.
 
@@ -26,7 +26,7 @@ pip install aiostdlib
 
 ### Usage
 
-The `aiostdlib` API is the same as the standard library, except that it is asynchronous.
+The `aiostdlib` API is the same as the standard library (*v3.13*), except that it is asynchronous.
 
 #### [SOON] builtins
 
