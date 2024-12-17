@@ -5,7 +5,7 @@
 
 ## About
 
-### *coroutine* tomllib.**load**(*fp, /, \*, parse_float=float*)
+### \* *coroutine* tomllib.**load**(*fp, /, \*, parse_float=float*)
 
 Read a TOML file. The first argument should be a readable and binary file object. Return a [dict][dict]. Convert TOML
 types to Python using this [conversion table](#conversion-table).
@@ -15,13 +15,13 @@ types to Python using this [conversion table](#conversion-table).
 [decimal.Decimal][decimal.Decimal]). The callable must not return a [dict][dict] or a [list][list], else a
 [ValueError][ValueError] is raised.
 
-### tomllib.**loads**(*s, /, \*, parse_float=float*)
+### \* tomllib.**loads**(*s, /, \*, parse_float=float*)
 
 Load TOML from a [str][str] object. Return a [dict][dict]. Convert TOML types to Python using this
 [conversion table](#conversion-table). The parse_float argument has the same meaning as in
-[load()](#coroutine-tomllibloadfp---parse_floatfloat).
+[load()](#-coroutine-tomllibloadfp---parse_floatfloat).
 
-### *exception* tomllib.**TOMLDecodeError**
+### \* *exception* tomllib.**TOMLDecodeError**
 
 Subclass of [ValueError][ValueError].
 
