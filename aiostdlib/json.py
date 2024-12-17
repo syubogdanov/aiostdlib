@@ -53,6 +53,10 @@ async def dump(  # noqa: PLR0913
     Notes
     -----
     * `fp.write` is interpreted as IO-bound.
+
+    See Also
+    --------
+    * `json.dump`.
     """
     if cls is None:
         cls = JSONEncoder
@@ -92,6 +96,10 @@ async def load(
     Notes
     -----
     * `fp.read` is interpreted as IO-bound.
+
+    See Also
+    --------
+    * `json.load`.
     """
     read = to_async_if_not(fp.read)
     contents: str | bytes = await read()

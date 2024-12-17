@@ -25,6 +25,10 @@ async def load(
     Notes
     -----
     * `fp.read` is interpreted as IO-bound.
+
+    See Also
+    --------
+    * `tomllib.load`.
     """
     read = to_async_if_not(fp.read)
     bytes_: bytes = await read()

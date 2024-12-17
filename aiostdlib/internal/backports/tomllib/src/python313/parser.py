@@ -57,11 +57,21 @@ BASIC_STR_ESCAPE_REPLACEMENTS = MappingProxyType(
 
 
 class TOMLDecodeError(ValueError):
-    """An error raised if a document is not valid TOML."""
+    """An error raised if a document is not valid `TOML`.
+
+    See Also
+    --------
+    * `tomllib.TOMLDecodeError`.
+    """
 
 
 def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # noqa: C901
-    """Parse TOML from a string."""
+    """Parse `TOML` from a string.
+
+    See Also
+    --------
+    * `tomllib.loads`.
+    """
 
     # The spec allows converting "\r\n" to "\n", even in string
     # literals. Let's do so to simplify parsing.

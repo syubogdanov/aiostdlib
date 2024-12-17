@@ -21,14 +21,11 @@ NegInf = float("-inf")
 
 
 class JSONDecodeError(ValueError):
-    """Subclass of ValueError with the following additional properties:
+    """Subclass of `ValueError`.
 
-    msg: The unformatted error message
-    doc: The JSON document being parsed
-    pos: The start index of doc where parsing failed
-    lineno: The line corresponding to pos
-    colno: The column corresponding to pos
-
+    See Also
+    --------
+    * `json.JSONDecodeError`.
     """
 
     # Note that this exception is used from _json
@@ -262,33 +259,11 @@ def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
 
 
 class JSONDecoder(object):
-    """Simple JSON <https://json.org> decoder.
+    """`JSON` decoder.
 
-    Performs the following translations in decoding by default:
-
-    +---------------+-------------------+
-    | JSON          | Python            |
-    +===============+===================+
-    | object        | dict              |
-    +---------------+-------------------+
-    | array         | list              |
-    +---------------+-------------------+
-    | string        | str               |
-    +---------------+-------------------+
-    | number (int)  | int               |
-    +---------------+-------------------+
-    | number (real) | float             |
-    +---------------+-------------------+
-    | true          | True              |
-    +---------------+-------------------+
-    | false         | False             |
-    +---------------+-------------------+
-    | null          | None              |
-    +---------------+-------------------+
-
-    It also understands ``NaN``, ``Infinity``, and ``-Infinity`` as
-    their corresponding ``float`` values, which is outside the JSON spec.
-
+    See Also
+    --------
+    * `json.JSONDecoder`
     """
 
     def __init__(
@@ -301,37 +276,11 @@ class JSONDecoder(object):
         strict: bool = True,
         object_pairs_hook: Callable[[list[tuple[str, Any]]], Any] | None = None,
     ) -> None:
-        """``object_hook``, if specified, will be called with the result
-        of every JSON object decoded and its return value will be used in
-        place of the given ``dict``.  This can be used to provide custom
-        deserializations (e.g. to support JSON-RPC class hinting).
+        """Constructor for `JSONDecoder`.
 
-        ``object_pairs_hook``, if specified will be called with the result of
-        every JSON object decoded with an ordered list of pairs.  The return
-        value of ``object_pairs_hook`` will be used instead of the ``dict``.
-        This feature can be used to implement custom decoders.
-        If ``object_hook`` is also defined, the ``object_pairs_hook`` takes
-        priority.
-
-        ``parse_float``, if specified, will be called with the string
-        of every JSON float to be decoded. By default this is equivalent to
-        float(num_str). This can be used to use another datatype or parser
-        for JSON floats (e.g. decimal.Decimal).
-
-        ``parse_int``, if specified, will be called with the string
-        of every JSON int to be decoded. By default this is equivalent to
-        int(num_str). This can be used to use another datatype or parser
-        for JSON integers (e.g. float).
-
-        ``parse_constant``, if specified, will be called with one of the
-        following strings: -Infinity, Infinity, NaN.
-        This can be used to raise an exception if invalid JSON numbers
-        are encountered.
-
-        If ``strict`` is false (true is the default), then control
-        characters will be allowed inside strings.  Control characters in
-        this context are those with character codes in the 0-31 range,
-        including ``'\\t'`` (tab), ``'\\n'``, ``'\\r'`` and ``'\\0'``.
+        See Also
+        --------
+        * `json.JSONDecoder`.
         """
         self.object_hook = object_hook
         self.parse_float = parse_float or float
@@ -346,9 +295,11 @@ class JSONDecoder(object):
         self.scan_once = scanner.make_scanner(self)
 
     def decode(self: Self, s: str, _w=WHITESPACE.match) -> Any:
-        """Return the Python representation of ``s`` (a ``str`` instance
-        containing a JSON document).
+        """Return the Python representation of `s`.
 
+        See Also
+        --------
+        * `json.JSONDecoder.decode`.
         """
         obj, end = self.raw_decode(s, idx=_w(s, 0).end())
         end = _w(s, end).end()
@@ -357,13 +308,11 @@ class JSONDecoder(object):
         return obj
 
     def raw_decode(self: Self, s: str, idx: int = 0) -> tuple[Any, int]:
-        """Decode a JSON document from ``s`` (a ``str`` beginning with
-        a JSON document) and return a 2-tuple of the Python
-        representation and the index in ``s`` where the document ended.
+        """Return a tuple of Python representation and the end index.
 
-        This can be used to decode a JSON document from a string that may
-        have extraneous data at the end.
-
+        See Also
+        --------
+        * `json.JSONDecoder.raw_decode`.
         """
         try:
             obj, end = self.scan_once(s, idx)
