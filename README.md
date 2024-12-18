@@ -6,7 +6,7 @@
 [![Python Version][shields/python/version]][pypi/homepage]
 
 > [!WARNING]
-> The library is in the planning stage.
+> The library is in the pre-alpha stage.
 
 ## Key Features
 
