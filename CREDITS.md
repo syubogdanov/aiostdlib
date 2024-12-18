@@ -8,6 +8,7 @@
 | [mypy][13]              | [@python][14]                        | [GitHub][15]               | [MIT][16]                        |
 | [ruff][17]              | [@astral-sh][18]                     | [GitHub][19]               | [MIT][20]                        |
 | [GNU Make][21]          | [Free Software Foundation, Inc.][22] | [GNU][23]                  | [GNU General Public License][24] |
+| [cpython][25]           | [@python][26]                        | [GitHub][27]               | [PSF License][28]                |
 
 [01]: https://www.contributor-covenant.org/version/2/1/code_of_conduct
 [02]: https://where.coraline.codes
@@ -38,3 +39,8 @@
 [22]: https://www.gnu.org/software/make/#mission-statement
 [23]: https://www.gnu.org/
 [24]: https://www.gnu.org/licenses/gpl-3.0.en.html
+
+[25]: https://github.com/python/cpython
+[26]: https://github.com/python
+[27]: https://github.com
+[28]: https://github.com/python/cpython/blob/main/LICENSE
