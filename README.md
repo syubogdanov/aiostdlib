@@ -47,6 +47,25 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+#### [SOON] io
+
+For more, see the [documentation][github/docs/io].
+
+```python
+import asyncio
+
+from aiostdlib import io
+
+
+async def main() -> None:
+    async with io.open_code("aiostdlib.py") as file:
+        data = await file.read()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
 #### json
 
 For more, see the [documentation][github/docs/json].
@@ -200,6 +219,7 @@ MIT License, Copyright (c) 2024 Sergei Bogdanov. See [LICENSE][github/license] f
 <!-- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -->
 
 [github/docs/builtins]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/builtins.md
+[github/docs/io]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/io.md
 [github/docs/json]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/json.md
 [github/docs/pathlib]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/pathlib.md
 [github/docs/shutil]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/shutil.md
