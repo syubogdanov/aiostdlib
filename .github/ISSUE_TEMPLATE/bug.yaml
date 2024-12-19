@@ -50,25 +50,6 @@ body:
       label: Python Version
       description: What version of the software are you running?
       options:
-        - CPython 3.8.0
-        - CPython 3.8.1
-        - CPython 3.8.2
-        - CPython 3.8.3
-        - CPython 3.8.4
-        - CPython 3.8.5
-        - CPython 3.8.6
-        - CPython 3.8.7
-        - CPython 3.8.8
-        - CPython 3.8.9
-        - CPython 3.8.10
-        - CPython 3.8.11
-        - CPython 3.8.12
-        - CPython 3.8.13
-        - CPython 3.8.14
-        - CPython 3.8.15
-        - CPython 3.8.16
-        - CPython 3.8.17
-        - CPython 3.8.18
         - CPython 3.9.0
         - CPython 3.9.1
         - CPython 3.9.2
@@ -119,6 +100,12 @@ body:
         - CPython 3.12.2
         - CPython 3.12.3
         - CPython 3.12.4
+        - CPython 3.12.5
+        - CPython 3.12.6
+        - CPython 3.12.7
+        - CPython 3.12.8
+        - CPython 3.13.0
+        - CPython 3.13.1
         - Other (Use the Comments)
     validations:
       required: true
