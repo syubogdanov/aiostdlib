@@ -85,6 +85,26 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+#### [SOON] os
+
+For more, see the [documentation][github/docs/os].
+
+```python
+import asyncio
+
+from aiostdlib import os
+
+
+async def main() -> None:
+    if not await os.access("aiostdlib.txt", os.R_OK):
+        detail = "You have not been granted access to the file"
+        raise RuntimeError(detail)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
 #### [SOON] pathlib
 
 For more, see the [documentation][github/docs/pathlib].
@@ -118,6 +138,24 @@ from aiostdlib import shutil
 
 async def main() -> None:
     await shutil.rmtree("/tmp/aiostdlib/")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+#### [SOON] sys
+
+For more, see the [documentation][github/docs/sys].
+
+```python
+import asyncio
+
+from aiostdlib import sys
+
+
+async def main() -> None:
+    await sys.stdout.write("aiostdlib")
 
 
 if __name__ == "__main__":
@@ -221,8 +259,10 @@ MIT License, Copyright (c) 2024 Sergei Bogdanov. See [LICENSE][github/license] f
 [github/docs/builtins]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/builtins.md
 [github/docs/io]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/io.md
 [github/docs/json]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/json.md
+[github/docs/os]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/os.md
 [github/docs/pathlib]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/pathlib.md
 [github/docs/shutil]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/shutil.md
+[github/docs/sys]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/sys.md
 [github/docs/tarfile]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/tarfile.md
 [github/docs/tempfile]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/tempfile.md
 [github/docs/tomllib]: https://github.com/syubogdanov/aiostdlib/tree/main/docs/tomllib.md
