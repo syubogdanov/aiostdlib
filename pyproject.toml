@@ -13,6 +13,21 @@ readme = "README.md"
 homepage = "https://github.com/syubogdanov/aiostdlib"
 repository = "https://github.com/syubogdanov/aiostdlib"
 documentation = "https://github.com/syubogdanov/aiostdlib/tree/main/docs/"
+keywords = [
+    "python",
+    "async",
+    "stdlib",
+    "io",
+    "json",
+    "os",
+    "pathlib",
+    "shutil",
+    "sys",
+    "tarfile",
+    "tempfile",
+    "tomllib",
+    "zipfile",
+]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",
