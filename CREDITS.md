@@ -9,6 +9,7 @@
 | [ruff][17]              | [@astral-sh][18]                     | [GitHub][19]               | [MIT][20]                        |
 | [GNU Make][21]          | [Free Software Foundation, Inc.][22] | [GNU][23]                  | [GNU General Public License][24] |
 | [cpython][25]           | [@python][26]                        | [GitHub][27]               | [PSF License][28]                |
+| [pytest][29]            | [@pytest-dev][30]                    | [GitHub][31]               | [MIT][32]                        |
 
 [01]: https://www.contributor-covenant.org/version/2/1/code_of_conduct
 [02]: https://where.coraline.codes
@@ -44,3 +45,8 @@
 [26]: https://github.com/python
 [27]: https://github.com
 [28]: https://github.com/python/cpython/blob/main/LICENSE
+
+[29]: https://github.com/pytest-dev/pytest
+[30]: https://github.com/pytest-dev
+[31]: https://github.com
+[32]: https://github.com/pytest-dev/pytest/blob/main/LICENSE

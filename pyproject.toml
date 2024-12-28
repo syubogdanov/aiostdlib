@@ -28,7 +28,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.9, <=3.13"
+python = ">=3.9, <3.14"
 typing-extensions = {version = "^4.12", python = "<=3.10"}
 
 [tool.poetry.group.lint]
@@ -37,6 +37,12 @@ optional = true
 [tool.poetry.group.lint.dependencies]
 mypy = "^1.13"
 ruff = "^0.7"
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3"
 
 [tool.mypy]
 disallow_any_unimported = true
