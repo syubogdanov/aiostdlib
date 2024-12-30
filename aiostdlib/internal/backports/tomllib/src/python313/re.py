@@ -7,7 +7,7 @@ from __future__ import annotations
 import re
 
 from datetime import date, datetime, time, timedelta, timezone, tzinfo
-from functools import lru_cache
+from functools import cache
 from typing import TYPE_CHECKING, Any
 
 
@@ -88,7 +88,7 @@ def match_to_datetime(match: re.Match) -> datetime | date:
     return datetime(year, month, day, hour, minute, sec, micros, tzinfo=tz)
 
 
-@lru_cache(maxsize=None)
+@cache
 def cached_tz(hour_str: str, minute_str: str, sign_str: str) -> timezone:
     sign = 1 if sign_str == "+" else -1
     return timezone(

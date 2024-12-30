@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 
 from collections.abc import Callable, Iterator
+from math import isnan
 from typing import Any
 
 from aiostdlib.internal.backports.typing import Self
@@ -151,7 +152,7 @@ class JSONEncoder(object):
             # and/or platform-specific, so do tests which don't depend on the
             # internals.
 
-            if o != o:
+            if isnan(o):
                 text = "NaN"
             elif o == _inf:
                 text = "Infinity"

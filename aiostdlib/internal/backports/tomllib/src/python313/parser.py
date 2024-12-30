@@ -52,7 +52,7 @@ BASIC_STR_ESCAPE_REPLACEMENTS = MappingProxyType(
         "\\r": "\u000D",  # carriage return
         '\\"': "\u0022",  # quote
         "\\\\": "\u005C",  # backslash
-    }
+    },
 )
 
 
@@ -72,7 +72,6 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
     --------
     * `tomllib.loads`.
     """
-
     # The spec allows converting "\r\n" to "\n", even in string
     # literals. Let's do so to simplify parsing.
     src = s.replace("\r\n", "\n")
@@ -128,9 +127,8 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
         except IndexError:
             break
         if char != "\n":
-            raise suffixed_err(
-                src, pos, "Expected newline or end of document after a statement"
-            )
+            detail = "Expected newline or end of document after a statement"
+            raise suffixed_err(src, pos, detail)
         pos += 1
 
     return out.data.dict
@@ -165,7 +163,7 @@ class Flags:
             cont = cont[k]["nested"]
         cont.pop(key[-1], None)
 
-    def set(self, key: Key, flag: int, *, recursive: bool) -> None:  # noqa: A003
+    def set(self, key: Key, flag: int, *, recursive: bool) -> None:
         cont = self._flags
         key_parent, key_stem = key[:-1], key[-1]
         for k in key_parent:
@@ -222,7 +220,8 @@ class NestedDict:
         if last_key in cont:
             list_ = cont[last_key]
             if not isinstance(list_, list):
-                raise KeyError("An object other than list found behind this key")
+                detail = "An object other than list found behind this key"
+                raise KeyError(detail)
             list_.append({})
         else:
             cont[last_key] = [{}]
@@ -608,12 +607,10 @@ def parse_value(  # noqa: C901
         return parse_literal_str(src, pos)
 
     # Booleans
-    if char == "t":
-        if src.startswith("true", pos):
-            return pos + 4, True
-    if char == "f":
-        if src.startswith("false", pos):
-            return pos + 5, False
+    if char == "t" and src.startswith("true", pos):
+        return pos + 4, True
+    if char == "f" and src.startswith("false", pos):
+        return pos + 5, False
 
     # Arrays
     if char == "[":
@@ -661,10 +658,7 @@ def suffixed_err(src: str, pos: Pos, msg: str) -> TOMLDecodeError:
         if pos >= len(src):
             return "end of document"
         line = src.count("\n", 0, pos) + 1
-        if line == 1:
-            column = pos + 1
-        else:
-            column = pos - src.rindex("\n", 0, pos)
+        column = pos + 1 if line == 1 else pos - src.rindex("\n", 0, pos)
         return f"line {line}, column {column}"
 
     return TOMLDecodeError(f"{msg} (at {coord_repr(src, pos)})")
@@ -689,7 +683,8 @@ def make_safe_parse_float(parse_float: ParseFloat) -> ParseFloat:
     def safe_parse_float(float_str: str) -> Any:
         float_value = parse_float(float_str)
         if isinstance(float_value, (dict, list)):
-            raise ValueError("parse_float must not return dicts or lists")
+            detail = "parse_float must not return dicts or lists"
+            raise ValueError(detail)  # noqa: TRY004
         return float_value
 
     return safe_parse_float
