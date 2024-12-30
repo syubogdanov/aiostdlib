@@ -42,6 +42,7 @@ class JSONDecodeError(ValueError):
         self.colno = colno
 
     def __reduce__(self: Self) -> tuple[type[Self], tuple[str, str, int]]:
+        """Return a `tuple` that can be used to recreate the object when it is pickled."""
         return self.__class__, (self.msg, self.doc, self.pos)
 
 
@@ -85,7 +86,8 @@ def scanstring(s, end, strict=True):
     while 1:
         chunk = STRINGCHUNK.match(s, end)
         if chunk is None:
-            raise JSONDecodeError("Unterminated string starting at", s, begin)
+            detail = "Unterminated string starting at"
+            raise JSONDecodeError(detail, s, begin)
         end = chunk.end()
         content, terminator = chunk.groups()
         # Content is contains zero or more unescaped string characters
@@ -97,7 +99,6 @@ def scanstring(s, end, strict=True):
             break
         elif terminator != "\\":
             if strict:
-                #msg = "Invalid control character %r at" % (terminator,)
                 msg = f"Invalid control character {terminator!r} at"
                 raise JSONDecodeError(msg, s, end)
             else:
@@ -106,15 +107,15 @@ def scanstring(s, end, strict=True):
         try:
             esc = s[end]
         except IndexError:
-            raise JSONDecodeError("Unterminated string starting at",
-                                  s, begin) from None
+            detail = "Unterminated string starting at"
+            raise JSONDecodeError(detail,s, begin) from None
         # If not a unicode escape sequence, must be in the lookup table
-        if esc != 'u':
+        if esc != "u":
             try:
                 char = BACKSLASH[esc]
             except KeyError:
                 msg = f"Invalid \\escape: {esc!r}"
-                raise JSONDecodeError(msg, s, end)
+                raise JSONDecodeError(msg, s, end) from None
             end += 1
         else:
             uni = _decode_uXXXX(s, end)
@@ -134,7 +135,7 @@ WHITESPACE_STR = " \t\n\r"
 
 
 def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
-               memo=None, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
+               memo=None):
     s, end = s_and_end
     pairs = []
     pairs_append = pairs.append
@@ -147,11 +148,11 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
     nextchar = s[end:end + 1]
     # Normally we expect nextchar == '"'
     if nextchar != '"':
-        if nextchar in _ws:
-            end = _w(s, end).end()
+        if nextchar in WHITESPACE_STR:
+            end = WHITESPACE.match(s, end).end()
             nextchar = s[end:end + 1]
         # Trivial empty object
-        if nextchar == '}':
+        if nextchar == "}":
             if object_pairs_hook is not None:
                 result = object_pairs_hook(pairs)
                 return result, end + 1
@@ -160,8 +161,8 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
                 pairs = object_hook(pairs)
             return pairs, end + 1
         elif nextchar != '"':
-            raise JSONDecodeError(
-                "Expecting property name enclosed in double quotes", s, end)
+            detail = "Expecting property name enclosed in double quotes"
+            raise JSONDecodeError(detail, s, end)
     end += 1
     while True:
         key, end = scanstring(s, end, strict)
@@ -169,17 +170,17 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
         # To skip some function call overhead we optimize the fast paths where
         # the JSON key separator is ": " or just ":".
         if s[end:end + 1] != ":":
-            end = _w(s, end).end()
+            end = WHITESPACE.match(s, end).end()
             if s[end:end + 1] != ":":
                 detail = "Expecting ':' delimiter"
                 raise JSONDecodeError(detail, s, end)
         end += 1
 
         try:
-            if s[end] in _ws:
+            if s[end] in WHITESPACE_STR:
                 end += 1
-                if s[end] in _ws:
-                    end = _w(s, end + 1).end()
+                if s[end] in WHITESPACE_STR:
+                    end = WHITESPACE.match(s, end + 1).end()
         except IndexError:
             pass
 
@@ -191,8 +192,8 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
         pairs_append((key, value))
         try:
             nextchar = s[end]
-            if nextchar in _ws:
-                end = _w(s, end + 1).end()
+            if nextchar in WHITESPACE_STR:
+                end = WHITESPACE.match(s, end + 1).end()
                 nextchar = s[end]
         except IndexError:
             nextchar = ""
@@ -204,7 +205,7 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
             detail = "Expecting ',' delimiter"
             raise JSONDecodeError(detail, s, end - 1)
         comma_idx = end - 1
-        end = _w(s, end).end()
+        end = WHITESPACE.match(s, end).end()
         nextchar = s[end:end + 1]
         end += 1
         if nextchar != '"':
@@ -221,15 +222,15 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
         pairs = object_hook(pairs)
     return pairs, end
 
-def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
+def JSONArray(s_and_end, scan_once):
     s, end = s_and_end
     values = []
     nextchar = s[end:end + 1]
-    if nextchar in _ws:
-        end = _w(s, end + 1).end()
+    if nextchar in WHITESPACE_STR:
+        end = WHITESPACE.match(s, end + 1).end()
         nextchar = s[end:end + 1]
     # Look-ahead for trivial empty array
-    if nextchar == ']':
+    if nextchar == "]":
         return values, end + 1
     _append = values.append
     while True:
@@ -240,8 +241,8 @@ def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
             raise JSONDecodeError(detail, s, err.value) from None
         _append(value)
         nextchar = s[end:end + 1]
-        if nextchar in _ws:
-            end = _w(s, end + 1).end()
+        if nextchar in WHITESPACE_STR:
+            end = WHITESPACE.match(s, end + 1).end()
             nextchar = s[end:end + 1]
         end += 1
         if nextchar == "]":
@@ -251,14 +252,14 @@ def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
             raise JSONDecodeError(detail, s, end - 1)
         comma_idx = end - 1
         try:
-            if s[end] in _ws:
+            if s[end] in WHITESPACE_STR:
                 end += 1
-                if s[end] in _ws:
-                    end = _w(s, end + 1).end()
+                if s[end] in WHITESPACE_STR:
+                    end = WHITESPACE.match(s, end + 1).end()
             nextchar = s[end:end + 1]
         except IndexError:
             pass
-        if nextchar == ']':
+        if nextchar == "]":
             detail = "Illegal trailing comma before end of array"
             raise JSONDecodeError(detail, s, comma_idx)
 

@@ -75,13 +75,14 @@ def dumps(  # noqa: PLR0913
 _default_decoder = JSONDecoder(object_hook=None, object_pairs_hook=None)
 
 
-def detect_encoding(b):
-    bstartswith = b.startswith
-    if bstartswith((codecs.BOM_UTF32_BE, codecs.BOM_UTF32_LE)):
+def detect_encoding(b: bytes | bytearray) -> str:
+    if b.startswith((codecs.BOM_UTF32_BE, codecs.BOM_UTF32_LE)):
         return "utf-32"
-    if bstartswith((codecs.BOM_UTF16_BE, codecs.BOM_UTF16_LE)):
+
+    if b.startswith((codecs.BOM_UTF16_BE, codecs.BOM_UTF16_LE)):
         return "utf-16"
-    if bstartswith(codecs.BOM_UTF8):
+
+    if b.startswith(codecs.BOM_UTF8):
         return "utf-8-sig"
 
     if len(b) >= 4:

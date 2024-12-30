@@ -123,12 +123,12 @@ class JSONEncoder:
         # This doesn't pass the iterator directly to ''.join() because the
         # exceptions aren't as detailed.  The list call should be roughly
         # equivalent to the PySequence_Fast that ''.join() would do.
-        chunks = self.iterencode(o, _one_shot=True)
+        chunks = self.iterencode(o)
         if not isinstance(chunks, (list, tuple)):
             chunks = list(chunks)
         return "".join(chunks)
 
-    def iterencode(self: Self, o: Any, _one_shot: bool = False) -> Iterator[str]:
+    def iterencode(self: Self, o: Any) -> Iterator[str]:  # noqa: ANN401
         """Encode the given object and yield each string representation as available.
 
         See Also
@@ -175,12 +175,11 @@ class JSONEncoder:
             self.item_separator,
             self.sort_keys,
             self.skipkeys,
-            _one_shot,
         )
         return _iterencode(o, 0)
 
 def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
-        _key_separator, _item_separator, _sort_keys, _skipkeys, _one_shot,
+        _key_separator, _item_separator, _sort_keys, _skipkeys,
         ## HACK: hand-optimized bytecode; turn globals into locals
         _intstr=int.__repr__,
     ):
