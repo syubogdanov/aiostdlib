@@ -1,14 +1,15 @@
-"""Implementation of JSONDecoder."""
-
 from __future__ import annotations
 
 import re
 
-from collections.abc import Callable
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from aiostdlib.internal.backports.json.src.python313 import scanner
 from aiostdlib.internal.backports.typing import Self
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 __all__ = ["JSONDecodeError", "JSONDecoder"]
@@ -30,8 +31,8 @@ class JSONDecodeError(ValueError):
 
     # Note that this exception is used from _json
     def __init__(self: Self, msg: str, doc: str, pos: int) -> None:
-        lineno = doc.count('\n', 0, pos) + 1
-        colno = pos - doc.rfind('\n', 0, pos)
+        lineno = doc.count("\n", 0, pos) + 1
+        colno = pos - doc.rfind("\n", 0, pos)
         errmsg = "%s: line %d column %d (char %d)" % (msg, lineno, colno, pos)
         ValueError.__init__(self, errmsg)
         self.msg = msg

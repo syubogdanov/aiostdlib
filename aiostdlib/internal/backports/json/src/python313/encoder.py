@@ -1,14 +1,15 @@
-"""Implementation of JSONEncoder."""
-
 from __future__ import annotations
 
 import re
 
-from collections.abc import Callable, Iterator
 from math import isnan
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from aiostdlib.internal.backports.typing import Self
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Iterator
 
 
 ESCAPE = re.compile(r'[\x00-\x1f\\"\b\f\n\r\t]')
@@ -80,7 +81,7 @@ class JSONEncoder(object):
         separators: tuple[str, str] | None = None,
         default: Callable[..., Any] | None = None,
     ) -> None:
-        """Constructor for `JSONEncoder`.
+        """Initialize the `JSONEncoder` instance.
 
         See Also
         --------
@@ -99,7 +100,7 @@ class JSONEncoder(object):
         if default is not None:
             self.default = default
 
-    def default(self: Self, o: Any) -> Any:
+    def default(self: Self, o: Any) -> Any:  # noqa: ANN401
         """Add support for an arbitrary type.
 
         See Also
@@ -109,7 +110,7 @@ class JSONEncoder(object):
         detail = f"Object of type {o.__class__.__name__} is not JSON serializable"
         raise TypeError(detail)
 
-    def encode(self: Self, o: Any) -> str:
+    def encode(self: Self, o: Any) -> str:  # noqa: ANN401
         """Return a `JSON` string representation of a Python data structure.
 
         See Also
@@ -118,17 +119,16 @@ class JSONEncoder(object):
         """
         # This is for extremely simple cases and benchmarks.
         if isinstance(o, str):
-            if self.ensure_ascii:
-                return encode_basestring_ascii(o)
-            else:
-                return encode_basestring(o)
+            encoder = encode_basestring_ascii if self.ensure_ascii else encode_basestring
+            return encoder(o)
+
         # This doesn't pass the iterator directly to ''.join() because the
         # exceptions aren't as detailed.  The list call should be roughly
         # equivalent to the PySequence_Fast that ''.join() would do.
         chunks = self.iterencode(o, _one_shot=True)
         if not isinstance(chunks, (list, tuple)):
             chunks = list(chunks)
-        return ''.join(chunks)
+        return "".join(chunks)
 
     def iterencode(self: Self, o: Any, _one_shot: bool = False) -> Iterator[str]:
         """Encode the given object and yield each string representation as available.
@@ -137,14 +137,8 @@ class JSONEncoder(object):
         --------
         * `json.JSONEncoder.iterencode`.
         """
-        if self.check_circular:
-            markers = {}
-        else:
-            markers = None
-        if self.ensure_ascii:
-            _encoder = encode_basestring_ascii
-        else:
-            _encoder = encode_basestring
+        markers = {} if self.check_circular else None
+        _encoder = encode_basestring_ascii if self.ensure_ascii else encode_basestring
 
         def floatstr(o, allow_nan=self.allow_nan,
                 _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
@@ -190,15 +184,6 @@ class JSONEncoder(object):
 def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         _key_separator, _item_separator, _sort_keys, _skipkeys, _one_shot,
         ## HACK: hand-optimized bytecode; turn globals into locals
-        ValueError=ValueError,
-        dict=dict,
-        float=float,
-        id=id,
-        int=int,
-        isinstance=isinstance,
-        list=list,
-        str=str,
-        tuple=tuple,
         _intstr=int.__repr__,
     ):
 
@@ -209,7 +194,8 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         if markers is not None:
             markerid = id(lst)
             if markerid in markers:
-                raise ValueError("Circular reference detected")
+                detail = "Circular reference detected"
+                raise ValueError(detail)
             markers[markerid] = lst
         buf = "["
         if _indent is not None:
@@ -361,7 +347,8 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             if markers is not None:
                 markerid = id(o)
                 if markerid in markers:
-                    raise ValueError("Circular reference detected")
+                    detail = "Circular reference detected"
+                    raise ValueError(detail)
                 markers[markerid] = o
             o = _default(o)
             yield from _iterencode(o, _current_indent_level)
