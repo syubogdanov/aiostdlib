@@ -211,7 +211,8 @@ class NestedDict:
             if access_lists and isinstance(cont, list):
                 cont = cont[-1]
             if not isinstance(cont, dict):
-                raise KeyError("There is no nest behind this key")
+                detail = "There is no nest behind this key"
+                raise KeyError(detail)
         return cont
 
     def append_nest_to_list(self, key: Key) -> None:
@@ -680,7 +681,7 @@ def make_safe_parse_float(parse_float: ParseFloat) -> ParseFloat:
     if parse_float is float:
         return float
 
-    def safe_parse_float(float_str: str) -> Any:
+    def safe_parse_float(float_str: str) -> Any:  # noqa: ANN401
         float_value = parse_float(float_str)
         if isinstance(float_value, (dict, list)):
             detail = "parse_float must not return dicts or lists"
