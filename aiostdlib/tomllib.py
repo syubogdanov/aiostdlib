@@ -1,4 +1,5 @@
-from aiostdlib.internal.impl.tomllib import TOMLDecodeError, load, loads
+from aiostdlib.internal.backports.tomllib import TOMLDecodeError, loads
+from aiostdlib.internal.impl.tomllib import load
 
 
 __all__: list[str] = ["TOMLDecodeError", "load", "loads"]

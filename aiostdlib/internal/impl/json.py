@@ -2,13 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from aiostdlib.internal.backports.json import (
-    JSONDecodeError,
-    JSONDecoder,
-    JSONEncoder,
-    dumps,
-    loads,
-)
+from aiostdlib.internal.backports.json import JSONDecoder, JSONEncoder, loads
 from aiostdlib.internal.utils.decorators import to_async_if_not
 from aiostdlib.internal.utils.typing import (
     SupportsAsyncRead,
@@ -22,15 +16,7 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
 
-__all__: list[str] = [
-    "JSONDecodeError",
-    "JSONDecoder",
-    "JSONEncoder",
-    "dump",
-    "dumps",
-    "load",
-    "loads",
-]
+__all__: list[str] = ["dump", "load"]
 
 
 async def dump(  # noqa: PLR0913

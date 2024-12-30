@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from aiostdlib.internal.backports.tomllib import TOMLDecodeError, loads
+from aiostdlib.internal.backports.tomllib import loads
 from aiostdlib.internal.utils.decorators import to_async_if_not
 from aiostdlib.internal.utils.typing import SupportsAsyncRead, SupportsRead
 
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
 
-__all__: list[str] = ["TOMLDecodeError", "load", "loads"]
+__all__: list[str] = ["load"]
 
 
 async def load(
