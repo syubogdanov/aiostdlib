@@ -26,7 +26,6 @@ ESCAPE_DCT = {
 }
 for i in range(0x20):
     ESCAPE_DCT.setdefault(chr(i), '\\u{0:04x}'.format(i))
-    #ESCAPE_DCT.setdefault(chr(i), '\\u%04x' % (i,))
 del i
 
 INFINITY = float("inf")
@@ -48,7 +47,6 @@ def encode_basestring_ascii(s):
             n = ord(s)
             if n < 0x10000:
                 return "\\u{0:04x}".format(n)
-                #return '\\u%04x' % (n,)
             else:
                 # surrogate pair
                 n -= 0x10000
@@ -58,7 +56,7 @@ def encode_basestring_ascii(s):
     return '"' + ESCAPE_ASCII.sub(replace, s) + '"'
 
 
-class JSONEncoder(object):
+class JSONEncoder:
     """`JSON` encoder for Python data structures.
 
     See Also
@@ -96,7 +94,7 @@ class JSONEncoder(object):
         if separators is not None:
             self.item_separator, self.key_separator = separators
         elif indent is not None:
-            self.item_separator = ','
+            self.item_separator = ","
         if default is not None:
             self.default = default
 
@@ -246,12 +244,13 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
 
     def _iterencode_dict(dct, _current_indent_level):
         if not dct:
-            yield '{}'
+            yield "{}"
             return
         if markers is not None:
             markerid = id(dct)
             if markerid in markers:
-                raise ValueError("Circular reference detected")
+                detail = "Circular reference detected"
+                raise ValueError(detail)
             markers[markerid] = dct
         yield "{"
         if _indent is not None:
@@ -263,10 +262,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             newline_indent = None
             item_separator = _item_separator
         first = True
-        if _sort_keys:
-            items = sorted(dct.items())
-        else:
-            items = dct.items()
+        items = sorted(dct.items()) if _sort_keys else dct.items()
         for key, value in items:
             if isinstance(key, str):
                 pass
