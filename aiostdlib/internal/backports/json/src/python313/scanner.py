@@ -1,5 +1,3 @@
-"""JSON token scanner."""
-
 import re
 
 
@@ -46,7 +44,7 @@ def make_scanner(context):
         if m is not None:
             integer, frac, exp = m.groups()
             if frac or exp:
-                res = parse_float(integer + (frac or '') + (exp or ''))
+                res = parse_float(integer + (frac or "") + (exp or ""))
             else:
                 res = parse_int(integer)
             return res, m.end()

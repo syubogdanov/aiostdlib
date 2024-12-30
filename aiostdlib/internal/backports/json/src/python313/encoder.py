@@ -25,7 +25,7 @@ ESCAPE_DCT = {
     "\t": "\\t",
 }
 for i in range(0x20):
-    ESCAPE_DCT.setdefault(chr(i), '\\u{0:04x}'.format(i))
+    ESCAPE_DCT.setdefault(chr(i), f"\\u{i:04x}")
 del i
 
 INFINITY = float("inf")
@@ -46,7 +46,7 @@ def encode_basestring_ascii(s):
         except KeyError:
             n = ord(s)
             if n < 0x10000:
-                return "\\u{0:04x}".format(n)
+                return f"\\u{n:04x}"
             else:
                 # surrogate pair
                 n -= 0x10000
@@ -138,17 +138,16 @@ class JSONEncoder:
         markers = {} if self.check_circular else None
         _encoder = encode_basestring_ascii if self.ensure_ascii else encode_basestring
 
-        def floatstr(o, allow_nan=self.allow_nan,
-                _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
+        def floatstr(o, allow_nan=self.allow_nan, _repr=float.__repr__):
             # Check for specials.  Note that this type of test is processor
             # and/or platform-specific, so do tests which don't depend on the
             # internals.
 
             if isnan(o):
                 text = "NaN"
-            elif o == _inf:
+            elif o == INFINITY:
                 text = "Infinity"
-            elif o == _neginf:
+            elif o == -INFINITY:
                 text = "-Infinity"
             else:
                 return _repr(o)
