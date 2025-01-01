@@ -1,5 +1,4 @@
-__all__: list[str] = []
+from aiostdlib.io import BlockingIOError, open  # noqa: A004
 
 
-_detail = "'aiostdlib.builtins' is being developed"
-raise NotImplementedError(_detail)
+__all__: list[str] = ["BlockingIOError", "open"]

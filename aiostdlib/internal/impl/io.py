@@ -1,11 +1,40 @@
-from aiostdlib.internal.backports.io import (
-    DEFAULT_BUFFER_SIZE,
-    BlockingIOError,  # noqa: A004
-    UnsupportedOperation,
-    text_encoding,
+from __future__ import annotations
+
+import warnings
+
+from typing import IO, TYPE_CHECKING, Any, BinaryIO, Literal, overload
+
+from aiostdlib.internal.utils.typing import (
+    FileDescriptorOrPath,
+    OpenBinaryMode,
+    OpenBinaryModeReading,
+    OpenBinaryModeUpdating,
+    OpenBinaryModeWriting,
+    OpenTextMode,
 )
-from aiostdlib.internal.backports.os import SEEK_CUR, SEEK_SET
-from aiostdlib.internal.backports.typing import Self
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+
+__all__: list[str] = [
+    "BufferedIOBase",
+    "BufferedRWPair",
+    "BufferedRandom",
+    "BufferedReader",
+    "BufferedWriter",
+    "BytesIO",
+    "FileIO",
+    "IOBase",
+    "IncrementalNewlineDecoder",
+    "RawIOBase",
+    "StringIO",
+    "TextIOBase",
+    "TextIOWrapper",
+    "open",
+    "open_code",
+]
 
 
 class IOBase:
@@ -123,3 +152,125 @@ class IncrementalNewlineDecoder:
     --------
     * `io.IncrementalNewlineDecoder`.
     """
+
+
+@overload
+def open(  # noqa: A001
+    file: FileDescriptorOrPath,
+    mode: OpenTextMode = "r",
+    buffering: int = -1,
+    encoding: str | None = None,
+    errors: str | None = None,
+    newline: str | None = None,
+    closefd: bool = True,  # noqa: FBT001, FBT002
+    opener: Callable[[str, int], int] | None = None,
+) -> TextIOWrapper: ...
+
+
+@overload
+def open(  # noqa: A001
+    file: FileDescriptorOrPath,
+    mode: OpenBinaryMode,
+    buffering: Literal[0],
+    encoding: None = None,
+    errors: None = None,
+    newline: None = None,
+    closefd: bool = True,  # noqa: FBT001, FBT002
+    opener: Callable[[str, int], int] | None = None,
+) -> FileIO: ...
+
+
+@overload
+def open(  # noqa: A001
+    file: FileDescriptorOrPath,
+    mode: OpenBinaryModeUpdating,
+    buffering: Literal[-1, 1] = -1,
+    encoding: None = None,
+    errors: None = None,
+    newline: None = None,
+    closefd: bool = True,  # noqa: FBT001, FBT002
+    opener: Callable[[str, int], int] | None = None,
+) -> BufferedRandom: ...
+
+
+@overload
+def open(  # noqa: A001
+    file: FileDescriptorOrPath,
+    mode: OpenBinaryModeWriting,
+    buffering: Literal[-1, 1] = -1,
+    encoding: None = None,
+    errors: None = None,
+    newline: None = None,
+    closefd: bool = True,  # noqa: FBT001, FBT002
+    opener: Callable[[str, int], int] | None = None,
+) -> BufferedWriter: ...
+
+
+@overload
+def open(  # noqa: A001
+    file: FileDescriptorOrPath,
+    mode: OpenBinaryModeReading,
+    buffering: Literal[-1, 1] = -1,
+    encoding: None = None,
+    errors: None = None,
+    newline: None = None,
+    closefd: bool = True,  # noqa: FBT001, FBT002
+    opener: Callable[[str, int], int] | None = None,
+) -> BufferedReader: ...
+
+
+@overload
+def open(  # noqa: A001
+    file: FileDescriptorOrPath,
+    mode: OpenBinaryMode,
+    buffering: int = -1,
+    encoding: None = None,
+    errors: None = None,
+    newline: None = None,
+    closefd: bool = True,  # noqa: FBT001, FBT002
+    opener: Callable[[str, int], int] | None = None,
+) -> BinaryIO: ...
+
+
+@overload
+def open(  # noqa: A001
+    file: FileDescriptorOrPath,
+    mode: str,
+    buffering: int = -1,
+    encoding: str | None = None,
+    errors: str | None = None,
+    newline: str | None = None,
+    closefd: bool = True,  # noqa: FBT001, FBT002
+    opener: Callable[[str, int], int] | None = None,
+) -> IO[Any]: ...
+
+
+def open(  # noqa: A001
+    file: FileDescriptorOrPath,
+    mode: str = "r",
+    buffering: int = -1,
+    encoding: str | None = None,
+    errors: str | None = None,
+    newline: str | None = None,
+    closefd: bool = True,  # noqa: FBT001, FBT002
+    opener: Callable[[str, int], int] | None = None,
+) -> IO[Any]:
+    """Open `file` and return a corresponding file object.
+
+    See Also
+    --------
+    * `io.open`.
+    """
+    raise NotImplementedError
+
+
+def open_code(path: str) -> IO[bytes]:
+    """Open the provided file with mode `'rb'`.
+
+    See Also
+    --------
+    * `io.open_code`.
+    """
+    detail = "'aiostdlib.io.open_code' may not be using hooks"
+    warnings.warn(detail, RuntimeWarning, stacklevel=2)
+    return open(path, mode="rb")
