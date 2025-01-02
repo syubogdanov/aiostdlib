@@ -43,6 +43,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
+backlib = "^0.0"
 python = ">=3.9, <3.14"
 typing-extensions = {version = "^4.12", python = "<3.11"}
 

@@ -10,6 +10,7 @@
 | [GNU Make][21]          | [Free Software Foundation, Inc.][22] | [GNU][23]                  | [GNU General Public License][24] |
 | [cpython][25]           | [@python][26]                        | [GitHub][27]               | [PSF License][28]                |
 | [pytest][29]            | [@pytest-dev][30]                    | [GitHub][31]               | [MIT][32]                        |
+| [backlib][33]           | [@syubogdanov][34]                   | [GitHub][35]               | [MIT][36]                        |
 
 [01]: https://www.contributor-covenant.org/version/2/1/code_of_conduct
 [02]: https://where.coraline.codes
@@ -50,3 +51,8 @@
 [30]: https://github.com/pytest-dev
 [31]: https://github.com
 [32]: https://github.com/pytest-dev/pytest/blob/main/LICENSE
+
+[33]: https://github.com/syubogdanov/backlib
+[34]: https://github.com/syubogdanov
+[35]: https://github.com
+[36]: https://github.com/syubogdanov/backlib/blob/main/LICENSE
