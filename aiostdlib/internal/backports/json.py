@@ -1,4 +1,4 @@
-from aiostdlib.internal.backports.json.src.python313 import (
+from backlib.py313.json import (
     JSONDecodeError,
     JSONDecoder,
     JSONEncoder,
