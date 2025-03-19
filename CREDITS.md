@@ -4,13 +4,13 @@
 |-------------------------|--------------------------------------|----------------------------|----------------------------------|
 | [Code of Conduct][01]   | [Coraline Ada Ehmke][02]             | [Contributor Covenant][03] | [CC BY 4.0][04]                  |
 | [poetry][05]            | [@python-poetry][06]                 | [GitHub][07]               | [MIT][08]                        |
-| [typing_extensions][09] | [@python][10]                        | [GitHub][11]               | [PSF License Agreement][12]      |
+| [backlib][09]           | [@syubogdanov][10]                   | [GitHub][11]               | [MIT][12]                        |
 | [mypy][13]              | [@python][14]                        | [GitHub][15]               | [MIT][16]                        |
 | [ruff][17]              | [@astral-sh][18]                     | [GitHub][19]               | [MIT][20]                        |
 | [GNU Make][21]          | [Free Software Foundation, Inc.][22] | [GNU][23]                  | [GNU General Public License][24] |
 | [cpython][25]           | [@python][26]                        | [GitHub][27]               | [PSF License][28]                |
 | [pytest][29]            | [@pytest-dev][30]                    | [GitHub][31]               | [MIT][32]                        |
-| [backlib][33]           | [@syubogdanov][34]                   | [GitHub][35]               | [MIT][36]                        |
+| [black][33]             | [@psf][34]                           | [GitHub][35]               | [MIT][36]                        |
 
 [01]: https://www.contributor-covenant.org/version/2/1/code_of_conduct
 [02]: https://where.coraline.codes
@@ -22,10 +22,10 @@
 [07]: https://github.com
 [08]: https://github.com/python-poetry/poetry/blob/main/LICENSE
 
-[09]: https://github.com/python/typing_extensions
-[10]: https://github.com/python
+[09]: https://github.com/syubogdanov/backlib
+[10]: https://github.com/syubogdanov
 [11]: https://github.com
-[12]: https://github.com/python/typing_extensions/blob/main/LICENSE
+[12]: https://github.com/syubogdanov/backlib/blob/main/LICENSE
 
 [13]: https://github.com/python/mypy
 [14]: https://github.com/python
@@ -52,7 +52,7 @@
 [31]: https://github.com
 [32]: https://github.com/pytest-dev/pytest/blob/main/LICENSE
 
-[33]: https://github.com/syubogdanov/backlib
-[34]: https://github.com/syubogdanov
+[33]: https://github.com/psf/black
+[34]: https://github.com/psf
 [35]: https://github.com
-[36]: https://github.com/syubogdanov/backlib/blob/main/LICENSE
+[36]: https://github.com/psf/black/blob/main/LICENSE

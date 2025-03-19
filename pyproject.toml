@@ -7,26 +7,18 @@ name = "aiostdlib"
 version = "0.2.0-rc"
 description = "Only the standard library... but asynchronous!"
 license = "MIT"
-authors = ["Sergei Bogdanov <syubogdanov@outlook.com>"]
-maintainers = ["Sergei Bogdanov <syubogdanov@outlook.com>"]
+authors = ["Sergei Y. Bogdanov <syubogdanov@outlook.com>"]
+maintainers = ["Sergei Y. Bogdanov <syubogdanov@outlook.com>"]
 readme = "README.md"
 homepage = "https://github.com/syubogdanov/aiostdlib"
 repository = "https://github.com/syubogdanov/aiostdlib"
-documentation = "https://github.com/syubogdanov/aiostdlib/tree/main/docs/"
+documentation = "https://backlib.readthedocs.io"
 keywords = [
     "python",
     "async",
     "stdlib",
-    "io",
     "json",
-    "os",
-    "pathlib",
-    "shutil",
-    "sys",
-    "tarfile",
-    "tempfile",
     "tomllib",
-    "zipfile",
 ]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -43,22 +35,26 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-backlib = "^0.0"
+backlib = "^0.3"
 python = ">=3.9, <3.14"
-typing-extensions = {version = "^4.12", python = "<3.11"}
 
 [tool.poetry.group.lint]
 optional = true
 
 [tool.poetry.group.lint.dependencies]
-mypy = "^1.13"
-ruff = "^0.7"
+black = "~25.1"
+mypy = "~1.15"
+ruff = "~0.7"
 
 [tool.poetry.group.test]
 optional = true
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.3"
+pytest = "~8.3"
+
+[tool.black]
+line-length = 100
+target-version = ["py39"]
 
 [tool.mypy]
 disallow_any_unimported = true
@@ -68,25 +64,24 @@ disallow_untyped_decorators = true
 disallow_untyped_defs = true
 explicit_package_bases = true
 no_implicit_optional = true
+python_version = "3.9"
 strict_equality = true
 warn_unused_ignores = true
-python_version = "3.9"
 
 [tool.ruff]
 line-length = 100
 target-version = "py39"
 
 [tool.ruff.lint]
-select = ["ALL"]
-ignore = ["D100", "D104"]
-
-[tool.ruff.lint.flake8-type-checking]
-exempt-modules = [
-    "aiostdlib.internal.backports.typing",
-    "aiostdlib.internal.utils.typing",
-    "typing",
-    "typing_extensions",
+ignore = [
+    "A005",    # Module {name} shadows a Python standard-library module
+    "ANN401",  # Dynamically typed expressions (typing.Any) are disallowed in {name}
+    "D100",    # Missing docstring in public module
+    "D104",    # Missing docstring in public package
+    "FBT001",  # Checks for the use of boolean positional arguments in function definitions, as determined by the presence of a bool type hint.
+    "FBT002",  # Checks for the use of boolean positional arguments in function definitions, as determined by the presence of a boolean default value.
 ]
+select = ["ALL"]
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2
