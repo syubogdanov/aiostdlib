@@ -1,6 +1,6 @@
-FROM python:3.11-slim-bullseye
+FROM python:slim-bullseye
 
-WORKDIR /aiostdlib
+WORKDIR /aiostdlib/
 
 RUN apt-get update \
     && apt-get install --no-install-recommends --yes make \
@@ -15,4 +15,4 @@ RUN python -m pip install --no-cache-dir poetry==1.8.4 \
 COPY ./ ./
 
 ENTRYPOINT [ "python" ]
-CMD [ "--help" ]
+CMD [ "--version" ]
