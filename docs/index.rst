@@ -19,7 +19,7 @@ Installation
 ~~~~~~~~~~~~
 
 The library is available as
-```aiostdlib`` <https://pypi.org/project/aiostdlib/>`__ on PyPI:
+`aiostdlib <https://pypi.org/project/aiostdlib/>`__ on PyPI:
 
 .. code:: shell
 

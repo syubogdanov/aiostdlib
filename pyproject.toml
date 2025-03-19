@@ -12,7 +12,7 @@ maintainers = ["Sergei Y. Bogdanov <syubogdanov@outlook.com>"]
 readme = "README.md"
 homepage = "https://github.com/syubogdanov/aiostdlib"
 repository = "https://github.com/syubogdanov/aiostdlib"
-documentation = "https://backlib.readthedocs.io"
+documentation = "https://aiostdlib.readthedocs.io"
 keywords = [
     "python",
     "async",
