@@ -1,32 +1,41 @@
-DOCKER = docker
 VENV = poetry run
 
-# Docker
-docker:
-	$(DOCKER) build --file ./dev/docker/py39.Dockerfile --tag aiostdlib:3.9 .
-	$(DOCKER) build --file ./dev/docker/py310.Dockerfile --tag aiostdlib:3.10 .
-	$(DOCKER) build --file ./dev/docker/py311.Dockerfile --tag aiostdlib:3.11 .
-	$(DOCKER) build --file ./dev/docker/py312.Dockerfile --tag aiostdlib:3.12 .
-	$(DOCKER) build --file ./dev/docker/py313.Dockerfile --tag aiostdlib:3.13 .
+LIBRARY = aiostdlib
+TESTS = tests
+
+PYPI-PROD-TOKEN = pypi-XXXYYYZZZ
+PYPI-TEST-TOKEN = pypi-XXXYYYZZZ
+
+
+# CD
+publish-prod:
+	poetry config pypi-token.pypi $(PYPI-PROD-TOKEN)
+	poetry publish
+
+publish-test:
+	poetry config pypi-token.test-pypi $(PYPI-TEST-TOKEN)
+	poetry publish --repository=test-pypi
+
+
+# Formatters
+format: black
+
+black:
+	$(VENV) black ./$(LIBRARY)/ ./$(TESTS)/
+
 
 # Linters
 lint: ruff mypy
 
 mypy:
-	$(VENV) mypy ./
+	$(VENV) mypy ./$(LIBRARY)/
 
 ruff:
-	$(VENV) ruff check ./
+	$(VENV) ruff check ./$(LIBRARY)/ ./$(TESTS)/
+
 
 # Tests
-test: unit-tests compatibility-tests
+test: unit-tests
 
 unit-tests:
-	$(VENV) pytest ./tests/
-
-compatibility-tests:
-	$(DOCKER) run aiostdlib:3.9 -B -m pytest ./tests/
-	$(DOCKER) run aiostdlib:3.10 -B -m pytest ./tests/
-	$(DOCKER) run aiostdlib:3.11 -B -m pytest ./tests/
-	$(DOCKER) run aiostdlib:3.12 -B -m pytest ./tests/
-	$(DOCKER) run aiostdlib:3.13 -B -m pytest ./tests/
+	$(VENV) pytest ./$(TESTS)/
