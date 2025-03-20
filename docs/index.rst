@@ -65,12 +65,12 @@ Documentation
     json
     tomllib
 
-Notes
------
+Environment
+-----------
 
-- If ``AIOSTDLIB_CONCURRENT_WORKERS`` is a positive integer, then ``aiostdlib`` will create no more
-  than the specified number of threads. If zero, then threading is not used at all. Otherwise, a
-  minimum of ``32`` and ``os.cpu_count() + 4`` will be used.
+- If ``AIOSTDLIB_CONCURRENT_WORKERS`` is a positive integer, then no more than the specified number
+  of threads will be used to execute calls asynchronously. If zero, then threading is not used at
+  all. Otherwise, a minimum of ``32`` and ``os.cpu_count() + 4`` is the limit.
 
 License
 -------
@@ -78,10 +78,6 @@ License
 MIT License, Copyright (c) 2025 Sergei Y. Bogdanov. See
 `LICENSE <https://github.com/syubogdanov/aiostdlib/tree/main/LICENSE>`__
 file.
-
-.. raw:: html
-
-   <!-- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -->
 
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/aiostdlib.svg?color=green
    :target: https://pypi.org/project/aiostdlib/

@@ -50,11 +50,11 @@ async def main() -> None:
         data = await tomllib.load(file)
 ```
 
-## Notes
+## Environment
 
-* If `AIOSTDLIB_CONCURRENT_WORKERS` is a positive integer, then `aiostdlib` will create no more than
-the specified number of threads. If zero, then threading is not used at all. Otherwise, a minimum of
-`32` and `os.cpu_count() + 4` will be used.
+* If `AIOSTDLIB_CONCURRENT_WORKERS` is a positive integer, then no more than the specified number of
+  threads will be used to execute calls asynchronously. If zero, then threading is not used at all.
+  Otherwise, a minimum of `32` and `os.cpu_count() + 4` is the limit.
 
 ## License
 
