@@ -1,13 +1,11 @@
-from aiostdlib.internal.backports.json import (
+from aiostdlib.internal.stdlib.json import (
     JSONDecodeError,
     JSONDecoder,
     JSONEncoder,
-    dumps,
-    loads,
-)
-from aiostdlib.internal.impl.json import (
     dump,
+    dumps,
     load,
+    loads,
 )
 
 
@@ -20,14 +18,3 @@ __all__: list[str] = [
     "load",
     "loads",
 ]
-
-
-JSONDecodeError.__module__ = __name__
-
-JSONDecoder.__module__ = __name__
-JSONEncoder.__module__ = __name__
-
-dump.__module__ = __name__
-dumps.__module__ = __name__
-load.__module__ = __name__
-loads.__module__ = __name__

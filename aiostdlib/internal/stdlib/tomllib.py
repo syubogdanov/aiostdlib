@@ -2,16 +2,20 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from aiostdlib.internal.backports.tomllib import loads
-from aiostdlib.internal.utils.decorators import to_async_if_not
-from aiostdlib.internal.utils.typing import SupportsAsyncRead, SupportsRead
+from backlib.py313.tomllib import TOMLDecodeError, loads
+
+from aiostdlib.internal.core.asyncio import maybe_awaitify
 
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
+    from aiostdlib.internal.utils.typing import SupportsAsyncRead, SupportsRead
 
-__all__: list[str] = ["load"]
+
+__all__: list[str] = ["TOMLDecodeError", "load", "loads"]
+
+__aiostdlib__: str = "aiostdlib.tomllib"
 
 
 async def load(
@@ -30,7 +34,7 @@ async def load(
     --------
     * `tomllib.load`.
     """
-    read = to_async_if_not(fp.read)
+    read = maybe_awaitify(fp.read)
     bytes_: bytes = await read()
 
     try:
@@ -41,3 +45,6 @@ async def load(
         raise TypeError(detail) from None
 
     return loads(string, parse_float=parse_float)
+
+
+load.__module__ = __aiostdlib__

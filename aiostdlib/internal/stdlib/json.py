@@ -2,25 +2,38 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from aiostdlib.internal.backports.json import JSONDecoder, JSONEncoder, loads
-from aiostdlib.internal.utils.decorators import to_async_if_not
-from aiostdlib.internal.utils.typing import (
-    SupportsAsyncRead,
-    SupportsAsyncWrite,
-    SupportsRead,
-    SupportsWrite,
-)
+from backlib.py313.json import JSONDecodeError, JSONDecoder, JSONEncoder, dumps, loads
+
+from aiostdlib.internal.core.asyncio import maybe_awaitify
 
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
+    from aiostdlib.internal.utils.typing import (
+        AnyStr,
+        SupportsAsyncRead,
+        SupportsAsyncWrite,
+        SupportsRead,
+        SupportsWrite,
+    )
 
-__all__: list[str] = ["dump", "load"]
+
+__all__: list[str] = [
+    "JSONDecodeError",
+    "JSONDecoder",
+    "JSONEncoder",
+    "dump",
+    "dumps",
+    "load",
+    "loads",
+]
+
+__aiostdlib__: str = "aiostdlib.json"
 
 
-async def dump(  # noqa: PLR0913
-    obj: Any,  # noqa: ANN401
+async def dump(
+    obj: Any,
     fp: SupportsAsyncWrite[str] | SupportsWrite[str],
     *,
     skipkeys: bool = False,
@@ -32,7 +45,7 @@ async def dump(  # noqa: PLR0913
     separators: tuple[str, str] | None = None,
     default: Callable[[Any], Any] | None = None,
     sort_keys: bool = False,
-    **kwargs: Any,  # noqa: ANN401
+    **kwargs: Any,
 ) -> None:
     """Serialize `obj` as a `JSON` formatted stream to `fp`.
 
@@ -59,15 +72,15 @@ async def dump(  # noqa: PLR0913
         **kwargs,
     )
 
-    iterable = encoder.iterencode(obj)
-    write = to_async_if_not(fp.write)
+    iterator = encoder.iterencode(obj)
+    write = maybe_awaitify(fp.write)
 
-    for chunk in iterable:
+    for chunk in iterator:
         await write(chunk)
 
 
 async def load(
-    fp: SupportsAsyncRead[str | bytes] | SupportsRead[str | bytes],
+    fp: SupportsAsyncRead[AnyStr] | SupportsRead[AnyStr],
     *,
     cls: type[JSONDecoder] | None = None,
     object_hook: Callable[[dict[Any, Any]], Any] | None = None,
@@ -75,8 +88,8 @@ async def load(
     parse_int: Callable[[str], Any] | None = None,
     parse_constant: Callable[[str], Any] | None = None,
     object_pairs_hook: Callable[[list[tuple[Any, Any]]], Any] | None = None,
-    **kwargs: Any,  # noqa: ANN401
-) -> Any:  # noqa: ANN401
+    **kwargs: Any,
+) -> Any:
     """Deserialize `fp` to a Python object.
 
     Notes
@@ -87,8 +100,8 @@ async def load(
     --------
     * `json.load`.
     """
-    read = to_async_if_not(fp.read)
-    contents: str | bytes = await read()
+    read = maybe_awaitify(fp.read)
+    contents: AnyStr = await read()
 
     return loads(
         contents,
@@ -100,3 +113,7 @@ async def load(
         object_pairs_hook=object_pairs_hook,
         **kwargs,
     )
+
+
+dump.__module__ = __aiostdlib__
+load.__module__ = __aiostdlib__
