@@ -9,6 +9,14 @@ AnyStr = TypeVar("AnyStr", str, bytes)
 
 
 @runtime_checkable
+class Buffer(Protocol):
+    """An ABC with one abstract method `__buffer__`."""
+
+    def __buffer__(self, flags: int, /) -> memoryview:
+        """Return a memoryview of the buffer."""
+
+
+@runtime_checkable
 class SupportsRead(Protocol[T_co]):
     """An ABC with one abstract method `read`."""
 
