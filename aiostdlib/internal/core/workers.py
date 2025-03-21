@@ -20,21 +20,21 @@ def workers_count() -> int:
     -----
     * Raises `RuntimeWarning` if `os.environ` variable is broken.
     """
-    name = "AIOSTDLIB_CONCURRENT_WORKERS"
+    key = "AIOSTDLIB_CONCURRENT_WORKERS"
 
-    if (var := os.environ.get(name)) is None:
+    if (var := os.environ.get(key)) is None:
         return default_workers_count()
 
     try:
         user_limit = int(var)
 
     except (ValueError, TypeError):
-        detail = f"'{name}' is not an integer"
+        detail = f"'{key}' is not an integer"
         warn(detail, RuntimeWarning, stacklevel=2)
         return default_workers_count()
 
     if user_limit < 0:
-        detail = f"'{name}' is a negative integer"
+        detail = f"'{key}' is a negative integer"
         warn(detail, RuntimeWarning, stacklevel=2)
         return default_workers_count()
 
