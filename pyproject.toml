@@ -14,13 +14,13 @@ homepage = "https://github.com/syubogdanov/aiostdlib"
 repository = "https://github.com/syubogdanov/aiostdlib"
 documentation = "https://aiostdlib.readthedocs.io"
 keywords = [
-    "python",
     "async",
-    "stdlib",
     "json",
     "ntpath",
     "os",
     "posixpath",
+    "python",
+    "stdlib",
     "tomllib",
 ]
 classifiers = [
