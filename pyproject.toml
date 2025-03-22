@@ -38,7 +38,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-backlib = "^0.3"
+backlib = "^0.2.1"
 python = ">=3.9, <3.14"
 typing-extensions = "^4.12"
 
