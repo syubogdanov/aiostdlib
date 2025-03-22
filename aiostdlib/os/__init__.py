@@ -178,6 +178,7 @@ from aiostdlib.internal.stdlib.os import (
     urandom,
     write,
 )
+from aiostdlib.os import path
 
 
 __all__: list[str] = [
@@ -335,6 +336,7 @@ __all__: list[str] = [
     "name",
     "open",
     "pardir",
+    "path",
     "pathsep",
     "read",
     "readlink",
