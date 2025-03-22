@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2025.03.22
+
+* Added `aiostdlib.os`;
+* Added `aiostdlib.os.path`;
 * Added PEP-561 support (`py.typed`);
-* Added the ability to limit the number of workers.
+* Added the option to limit the number of workers.
 
 ## [0.1.0] - 2024.12.19
 

@@ -38,7 +38,7 @@ async def main() -> None:
         data = await json.load(file)
 ```
 
-#### os [UNRELEASED]
+#### os
 
 For more, see the [documentation][docs/os].
 
@@ -53,7 +53,7 @@ async def main() -> None:
     await os.write(fd, detail)
 ```
 
-#### os.path [UNRELEASED]
+#### os.path
 
 For more, see the [documentation][docs/os.path].
 
