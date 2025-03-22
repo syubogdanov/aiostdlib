@@ -34,8 +34,8 @@ For more, see the [documentation][docs/json].
 from aiostdlib import json
 
 async def main() -> None:
-    with open("aiostdlib.json") as file:
-        data = await json.load(file)
+    with open("aiostdlib.json", mode="w") as file:
+        await json.dump({"pypi": "aiostdlib"}, file)
 ```
 
 #### os
