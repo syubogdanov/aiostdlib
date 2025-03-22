@@ -92,6 +92,8 @@ Documentation
     :maxdepth: 1
 
     json
+    os
+    os.path
     tomllib
 
 Environment
