@@ -42,6 +42,21 @@ For more, see the
        with open("aiostdlib.json") as file:
            data = await json.load(file)
 
+os
+^^
+
+For more, see the
+`documentation <https://aiostdlib.readthedocs.io/en/latest/os.html>`__.
+
+.. code:: python
+
+   from aiostdlib import os
+
+   async def main() -> None:
+       fd = sys.stdout.fileno()
+       detail = b"Hello, aiostdlib!"
+       await os.write(fd, detail)
+
 tomllib
 ^^^^^^^
 

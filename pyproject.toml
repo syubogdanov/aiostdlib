@@ -18,6 +18,7 @@ keywords = [
     "async",
     "stdlib",
     "json",
+    "os",
     "tomllib",
 ]
 classifiers = [
@@ -84,6 +85,9 @@ ignore = [
     "PLR0913",  # Checks for function definitions that include too many arguments.
 ]
 select = ["ALL"]
+
+[tool.ruff.lint.flake8-builtins]
+ignorelist = ["open"]
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2

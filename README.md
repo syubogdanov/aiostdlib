@@ -38,6 +38,21 @@ async def main() -> None:
         data = await json.load(file)
 ```
 
+#### os
+
+For more, see the [documentation][docs/os].
+
+```python
+import sys
+
+from aiostdlib import os
+
+async def main() -> None:
+    fd = sys.stdout.fileno()
+    detail = b"Hello, aiostdlib!"
+    await os.write(fd, detail)
+```
+
 #### tomllib
 
 For more, see the [documentation][docs/tomllib].
@@ -63,6 +78,7 @@ MIT License, Copyright (c) 2025 Sergei Y. Bogdanov. See [LICENSE][github/license
 <!-- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- -->
 
 [docs/json]: https://aiostdlib.readthedocs.io/en/latest/json.html
+[docs/os]: https://aiostdlib.readthedocs.io/en/latest/os.html
 [docs/tomllib]: https://aiostdlib.readthedocs.io/en/latest/tomllib.html
 
 [github/license]: https://github.com/syubogdanov/aiostdlib/tree/main/LICENSE
