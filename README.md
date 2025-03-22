@@ -38,7 +38,7 @@ async def main() -> None:
         data = await json.load(file)
 ```
 
-#### os
+#### os [UNRELEASED]
 
 For more, see the [documentation][docs/os].
 
@@ -51,6 +51,18 @@ async def main() -> None:
     fd = sys.stdout.fileno()
     detail = b"Hello, aiostdlib!"
     await os.write(fd, detail)
+```
+
+#### os.path [UNRELEASED]
+
+For more, see the [documentation][docs/os.path].
+
+```python
+from aiostdlib import os
+
+async def main() -> None:
+    if await os.path.exists("./aiostdlib.txt"):
+        await os.unlink("./aiostdlib.txt")
 ```
 
 #### tomllib
@@ -79,6 +91,7 @@ MIT License, Copyright (c) 2025 Sergei Y. Bogdanov. See [LICENSE][github/license
 
 [docs/json]: https://aiostdlib.readthedocs.io/en/latest/json.html
 [docs/os]: https://aiostdlib.readthedocs.io/en/latest/os.html
+[docs/os.path]: https://aiostdlib.readthedocs.io/en/latest/os.path.html
 [docs/tomllib]: https://aiostdlib.readthedocs.io/en/latest/tomllib.html
 
 [github/license]: https://github.com/syubogdanov/aiostdlib/tree/main/LICENSE

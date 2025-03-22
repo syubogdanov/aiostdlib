@@ -57,6 +57,20 @@ For more, see the
        detail = b"Hello, aiostdlib!"
        await os.write(fd, detail)
 
+os.path
+^^^^^^^
+
+For more, see the
+`documentation <https://aiostdlib.readthedocs.io/en/latest/os.path.html>`__.
+
+.. code:: python
+
+   from aiostdlib import os
+
+   async def main() -> None:
+       if await os.path.exists("./aiostdlib.txt"):
+           await os.unlink("./aiostdlib.txt")
+
 tomllib
 ^^^^^^^
 
